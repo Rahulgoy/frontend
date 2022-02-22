@@ -9,14 +9,17 @@ import Page from '../components/Page';
 import  StudentForm  from './StudentForm';
 import AuthSocial from '../sections/authentication/AuthSocial';
 
-import React from 'react'
+import React, {useState} from 'react'
 import { render } from 'react-dom'
 // import VideoRecorder from 'react-video-recorder'
+import { LoadingButton } from '@mui/lab';
+// 
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import Avatar from "@mui/material/Avatar";
+const storage = getStorage();
+const storageRef = ref(storage, 'some-child');
 
 
-
-//
-// import fileupload from '../components/fileupload';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Page)(({ theme }) => ({
@@ -52,14 +55,75 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 
 // ----------------------------------------------------------------------
-
+// var displayName=false;
+var Choose="Choose";
 export default function Register() {
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState(null);
+    const handleImageChange = (e) => {
+        if(e.target.files[0]){
+            setImage(e.target.files[0]);  
+            // window.alert("here");
+            // window.alert(e.target.files);
+            // console.log(e.target.files[0].name);
+            // displayName=!displayName;
+            Choose="File : "+e.target.files[0].name;
+        }
+    };
+    const handleChoose = () =>{
+      Choose="File :";
+      // window.alert(e.target.files[0]);
+    }
+    const handleSubmit = () => {
+        const imageRef = ref(storage, "image");
+        uploadBytes(imageRef, image)
+        .then(()=>{
+            getDownloadURL(imageRef).then((url)=>{
+                setUrl(url);
+            })
+            .catch((error)=>{
+                console.log(error.message,"Error");
+            });
+            setImage(null);
+        })
+        .catch((error)=>{
+            console.log(error.message);
+        });
+    };
+
+    console.log(url);
+
   return (
-    <RootStyle title="Register | Minimal-UI">
+    <RootStyle title="Register">
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
           Capture the student face
+          <Avatar style={{display:'flex', justifyItems:'center'}} src={url} sx={{ width: 150, height: 150  }} />
         </Typography>
+        <LoadingButton variant="text" component="label" onClick={handleChoose}>{Choose}
+  
+          <input hidden type="file" onChange={handleImageChange}/>
+
+        </LoadingButton>
+        
+        <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
+      {/* // 'file' comes from the Blob or File API
+        uploadBytes(storageRef, file).then((snapshot) => {
+        console.log('Uploaded a blob or file!');
+        }); */}
+        {/* <input
+          accept="image/*"
+          className={classes.input}
+          style={{ display: 'none' }}
+          id="raised-button-file"
+          multiple
+          type="file"
+        />
+        <label htmlFor="raised-button-file">
+          <Button variant="raised" component="span" className={classes.button}>
+            Upload
+          </Button>
+        </label> */}
         {/* <img alt="register" src="/static/illustrations/illustration_register.png" /> */}
         {/* render(<App />, document.getElementById('root')) */}
 
@@ -78,8 +142,8 @@ export default function Register() {
 
           {/* <AuthSocial /> */}
 
-          <StudentForm />
-          {/* <fileupload /> */}
+          <StudentForm imageUrl={url}/>
+          
           {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" color="textPrimary">

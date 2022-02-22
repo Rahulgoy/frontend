@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { connect } from "react-redux";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 // material
 import {
   Link,
@@ -38,7 +39,22 @@ function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
-      signIn(formik.values);
+      const user = signIn(formik.values);
+
+      const auth=getAuth();
+      onAuthStateChanged(auth,function(user) {
+        if (user) {
+          // User is signed in.
+          console.log(user)
+          navigate('/dashboard/app', { replace: true });
+          
+        } else {
+          console.log("User not logged in")
+          navigate('/login', { replace: true });
+          // User is not signed in.
+        }
+      });
+
       console.log(formik.values);
       navigate('/dashboard/app', { replace: true });
     }

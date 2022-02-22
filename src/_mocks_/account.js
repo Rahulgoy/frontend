@@ -2,7 +2,7 @@
 
 const account = {
   displayName: 'Harbir Singh',
-  email: 'demo@minimals.cc',
+  email: 'hsingh21_be19@thapar.edu',
   photoURL: '/static/mock-images/avatars/avatar_default.jpg'
 };
 

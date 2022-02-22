@@ -1,5 +1,7 @@
 // material
 import { Box, Grid, Container, Typography } from '@mui/material';
+//mocks
+import account from '../../_mocks_/account';
 // components
 import Page from '../components/Page';
 // import {
@@ -21,10 +23,10 @@ import Page from '../components/Page';
 
 export default function DashboardApp() {
   return (
-    <Page title="Dashboard | Minimal-UI">
+    <Page title="Dashboard">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
-          <Typography variant="h2">Hi, Welcome back</Typography>
+          <Typography variant="h5">Hi {account.displayName}, Welcome back</Typography>
         </Box>
         {/* <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>

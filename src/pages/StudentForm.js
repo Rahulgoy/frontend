@@ -9,8 +9,9 @@ import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../components/Iconify';
 import { getDatabase, ref, set } from "firebase/database";
+import { getStorage } from 'firebase/storage';
 
-function writeUserData(values){
+function writeUserData(values, imageUrl){
     const db = getDatabase();
     // console.log(db);
     set(ref(db,'students/'+values.rollNumber),{
@@ -18,13 +19,14 @@ function writeUserData(values){
         email: values.email,
         rollNumber: values.rollNumber,
         hostel: values.hostel,
+        imageUrl : imageUrl
     });
 }
 
 
 
 // ----------------------------------------------------------------------
-function StudentForm() {
+function StudentForm({imageUrl}) {
   const navigate = useNavigate();
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -48,7 +50,7 @@ function StudentForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      writeUserData(formik.values);
+      writeUserData(formik.values, imageUrl);
     //   console.log(formik.values);
       navigate('/dashboard/user', { replace: true });
     }

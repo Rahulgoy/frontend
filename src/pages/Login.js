@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Card, Stack, Link, Container, Typography } from '@mui/material';
@@ -8,8 +8,10 @@ import AuthLayout from '../layouts/AuthLayout';
 import Page from '../components/Page';
 import { LoginForm } from '../sections/authentication/login';
 import AuthSocial from '../sections/authentication/AuthSocial';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 // ----------------------------------------------------------------------
+
 
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
@@ -39,8 +41,23 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Login() {
+  const navigate = useNavigate();
+
+
+  const auth=getAuth();
+onAuthStateChanged(auth,function(user) {
+  if (user) {
+    // User is signed in.
+    console.log(user)
+    navigate('/dashboard/app', { replace: true });
+    
+  } else {
+    console.log("User not logged in")
+    // User is not signed in.
+  }
+});
   return (
-    <RootStyle title="Login | Minimal-UI">
+    <RootStyle title="Login">
       <AuthLayout>
         Don’t have an account? &nbsp;
         <Link underline="none" variant="subtitle2" component={RouterLink} to="/register">
@@ -50,7 +67,7 @@ export default function Login() {
 
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          Hi, Welcome Back
+          
         </Typography>
         <img src="/static/illustrations/illustration_login.png" alt="login" />
       </SectionStyle>
@@ -59,7 +76,7 @@ export default function Login() {
         <ContentStyle>
           <Stack sx={{ mb: 5 }}>
             <Typography variant="h4" gutterBottom>
-              Sign in to Minimal
+              Sign in!
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
           </Stack>

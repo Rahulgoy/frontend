@@ -8,7 +8,8 @@ import Iconify from '../../components/Iconify';
 import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
-
+import { signOut } from '../../store/actions/authActions';
+import { connect } from "react-redux";
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -31,7 +32,7 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+function AccountPopover() {
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -106,7 +107,7 @@ export default function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button fullWidth color="inherit" variant="outlined">
+          <Button onClick={signOut} fullWidth color="inherit" variant="outlined">
             Logout
           </Button>
         </Box>
@@ -114,3 +115,17 @@ export default function AccountPopover() {
     </>
   );
 }
+
+const mapStateToProps = (state) => {
+  // console.log(state);
+  return {
+    auth: state.firebase.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signOut: () => dispatch(signOut()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(AccountPopover);

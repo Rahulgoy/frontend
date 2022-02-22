@@ -20,6 +20,7 @@ export default function UserMoreMenu({id}) {
     console.log(id);
     const db=getDatabase();
     set(ref1(db, 'students/'+id),null);
+    
     // db.child(`students/` + id).remove();
   };
 

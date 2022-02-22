@@ -1,56 +1,37 @@
-export const signIn = (credentials) => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut as lOut } from "firebase/auth";
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(credentials.email, credentials.password)
-      .then(() => {
-        dispatch({ type: "LOGIN_SUCCESS" });
-        console.log("Donne");
-      })
-      .catch((err) => {
-        dispatch({ type: "LOGIN_ERROR", err });
-      });
+export const signIn = (credentials) => {
+  const auth=getAuth();
+  signInWithEmailAndPassword(auth,credentials.email, credentials.password)
+    .then((userCredential) => {
+      const user=userCredential.user;
+      console.log("Donne");
+      return user;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   };
-};
 
 export const signOut = () => {
-  return (dispatch, getState, { getFirebase }) => {
-    const firebase = getFirebase();
-
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        dispatch({ type: "SIGNOUT_SUCCESS" });
-      });
-  };
+  const auth=getAuth();
+  lOut(auth).then(()=>{
+    console.log("Logged Out");
+  }).catch((error)=>{
+    console.log(error);
+  });
 };
 
 export const signUp = (newUser) => {
-  return (dispatch, getState, { getFirebase, getFirestore }) => {
-    const firebase = getFirebase();
-    const firestore = getFirestore();
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(newUser.email, newUser.password)
-      .then((resp) => {
-        console.log(resp);
-        return firestore.collection("users").doc(resp.user.uid).set({
-          firstName: newUser.firstName,
-          lastName: newUser.lastName,
-          email: newUser.email
-        });
-        
+    const auth=getAuth();
+      createUserWithEmailAndPassword(auth,newUser.email, newUser.password)
+      .then((userCredential) => {
+        // console.log(resp);
+        const user=userCredential.user;
+        return user;
       })
-      .then(() => {
-        dispatch({ type: "SIGNUP_SUCCESS" });
+      .catch((err)=>{
+        console.log(err);
       })
-      .catch((err) => {
-        dispatch({ type: "SIGNUP_ERROR", err });
-      });
-  };
 };
 

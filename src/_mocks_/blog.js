@@ -12,7 +12,7 @@ const POST_TITLES = [
   'Fresh Prince',
   'Six Socks Studio',
   'vincenzo de cotiis’ crossing over showcases a research on contamination',
-  'Simple, Great Looking Animations in Your Project | Video Tutorial',
+  'Simple, Great Looking Animations in Your ProjectVideo Tutorial',
   '40 Free Serif Fonts for Digital Designers',
   'Examining the Evolution of the Typical Web Design Client',
   'Katie Griffin loves making that homey art',

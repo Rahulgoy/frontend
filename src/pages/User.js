@@ -132,10 +132,9 @@ export default function User() {
   const filteredUsers = applySortFilter(students, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
-
   useEffect(() => {
     console.log("Working....");
-
+    
     const db=getDatabase();
     const stuValue=ref(db,'students/');
     onValue(stuValue,(snapshot)=>{
@@ -152,7 +151,7 @@ export default function User() {
   
   // console.log(students);
   return (
-    <Page title="User | Minimal-UI">
+    <Page title="Student Records">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -192,7 +191,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, rollNumber, avatarUrl, hostel } = row;
+                      const { id, name, rollNumber, imageUrl, hostel } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
@@ -211,7 +210,7 @@ export default function User() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={avatarUrl} />
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {name}
                               </Typography>
