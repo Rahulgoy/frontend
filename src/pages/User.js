@@ -138,8 +138,8 @@ export default function User() {
           <Button
             variant="contained"
             component={RouterLink}
-            // to="/dashboard/add"
-            to="#"
+            to="/dashboard/add"
+            // to="#"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
             New Student

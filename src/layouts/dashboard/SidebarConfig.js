@@ -12,15 +12,15 @@ const sidebarConfig = [
     icon: getIcon('eva:pie-chart-2-fill')
   },
   { 
-    title: 'Add Student',
+    title: 'Student Records',
     path: '/dashboard/user',
     icon: getIcon('eva:people-fill')
   },
-  {
-    title: 'Display Students',
-    path: '/dashboard/user',
-    icon: getIcon('eva:people-fill')
-  },
+  //{
+  //  title: 'Display Students',
+  //  path: '/dashboard/user',
+  //  icon: getIcon('eva:people-fill')
+  //},
 
   // ? SEE LATER
   // {   
@@ -35,12 +35,18 @@ const sidebarConfig = [
   // },
   
   {
-    title: 'login',
+    title: 'View Attendance',
+    path: '/dashboard/view',
+    icon: getIcon('eva:search-outline')
+  },
+
+  {
+    title: 'Login',
     path: '/login',
     icon: getIcon('eva:lock-fill')
   },
   {
-    title: 'register',
+    title: 'Register',
     path: '/register',
     icon: getIcon('eva:person-add-fill')
   },

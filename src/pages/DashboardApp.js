@@ -2,20 +2,20 @@
 import { Box, Grid, Container, Typography } from '@mui/material';
 // components
 import Page from '../components/Page';
-import {
-  AppTasks,
-  AppNewUsers,
-  AppBugReports,
-  AppItemOrders,
-  AppNewsUpdate,
-  AppWeeklySales,
-  AppOrderTimeline,
-  AppCurrentVisits,
-  AppWebsiteVisits,
-  AppTrafficBySite,
-  AppCurrentSubject,
-  AppConversionRates
-} from '../sections/@dashboard/app';
+// import {
+//   AppTasks,
+//   AppNewUsers,
+//   AppBugReports,
+//   AppItemOrders,
+//   AppNewsUpdate,
+//   AppWeeklySales,
+//   AppOrderTimeline,
+//   AppCurrentVisits,
+//   AppWebsiteVisits,
+//   AppTrafficBySite,
+//   AppCurrentSubject,
+//   AppConversionRates
+// } from '../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
 
@@ -24,9 +24,9 @@ export default function DashboardApp() {
     <Page title="Dashboard | Minimal-UI">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
-          <Typography variant="h4">Hi, Welcome back</Typography>
+          <Typography variant="h2">Hi, Welcome back</Typography>
         </Box>
-        <Grid container spacing={3}>
+        {/* <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
             <AppWeeklySales />
           </Grid>
@@ -70,8 +70,8 @@ export default function DashboardApp() {
 
           <Grid item xs={12} md={6} lg={8}>
             <AppTasks />
-          </Grid>
-        </Grid>
+          </Grid> */}
+        {/* </Grid> */}
       </Container>
     </Page>
   );
