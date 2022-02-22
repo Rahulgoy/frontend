@@ -32,10 +32,8 @@ import USERLIST from '../_mocks_/user';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'rollNumber', label: 'Roll Number', alignRight: false },
+  { id: 'hostel', label: 'Hostel', alignRight: false },
   { id: '' }
 ];
 
@@ -135,15 +133,16 @@ export default function User() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Students
           </Typography>
           <Button
             variant="contained"
             component={RouterLink}
+            // to="/dashboard/add"
             to="#"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            New User
+            New Student
           </Button>
         </Stack>
 
@@ -170,7 +169,7 @@ export default function User() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                      const { id, name, rollNumber, avatarUrl, hostel } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
 
                       return (
@@ -196,17 +195,17 @@ export default function User() {
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{company}</TableCell>
-                          <TableCell align="left">{role}</TableCell>
-                          <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
-                          <TableCell align="left">
+                          <TableCell align="left">{rollNumber}</TableCell>
+                          <TableCell align="left">{hostel}</TableCell>
+                          {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
+                          {/* <TableCell align="left">
                             <Label
                               variant="ghost"
                               color={(status === 'banned' && 'error') || 'success'}
                             >
                               {sentenceCase(status)}
                             </Label>
-                          </TableCell>
+                          </TableCell> */}
 
                           <TableCell align="right">
                             <UserMoreMenu />
