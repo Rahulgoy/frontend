@@ -10,14 +10,14 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../components/Iconify';
 import { getDatabase, ref, set } from "firebase/database";
 
-const writeUserData=(values)=>{
-    console.log(values.firstName);
-    set(ref(db,'students/'),{
-        firstName: values.firstName,
-        lastName: values.lastName,
+function writeUserData(values){
+    const db = getDatabase();
+    // console.log(db);
+    set(ref(db,'students/'+values.rollNumber),{
+        name : values.firstName+" "+values.lastName,
         email: values.email,
         rollNumber: values.rollNumber,
-        hostel: values.hostel
+        hostel: values.hostel,
     });
 }
 
@@ -33,7 +33,7 @@ function StudentForm() {
       .required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    rollNumber: Yup.number().positive().integer().required('Roll Number is required'),                 
+    rollNumber: Yup.number().positive().integer().required('Roll Number is required').moreThan(99999999,'Must be 9 digit').lessThan(1000000000,'Must be 9 digit'),                 
     // hostel: Yup.string().uppercase().required('Hostel is Required').max(1,'TOO Long!')
     hostel: Yup.string().required('Hostel is Required').matches(/^[A-Z]+$/,'Must be Hostel name')
   });
@@ -49,7 +49,7 @@ function StudentForm() {
     validationSchema: RegisterSchema,
     onSubmit: () => {
       writeUserData(formik.values);
-      console.log(formik.values);
+    //   console.log(formik.values);
       navigate('/dashboard/user', { replace: true });
     }
   });

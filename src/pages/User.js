@@ -1,6 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -27,6 +27,7 @@ import SearchNotFound from '../components/SearchNotFound';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
 //
 import USERLIST from '../_mocks_/user';
+import { getDatabase, ref, onValue} from "firebase/database";
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +39,10 @@ const TABLE_HEAD = [
 ];
 
 // ----------------------------------------------------------------------
+
+
+
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -75,7 +80,7 @@ export default function User() {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
+  const [students, setStudents] = useState([]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -84,7 +89,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = students.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -124,10 +129,28 @@ export default function User() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(students, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
 
+  useEffect(() => {
+    console.log("Working....");
+
+    const db=getDatabase();
+    const stuValue=ref(db,'students/');
+    onValue(stuValue,(snapshot)=>{
+      const data=snapshot.val();
+      // console.log(data);
+      const arr = [];
+      Object.keys(data).forEach(key => { 
+        arr.push(data[key]);
+      })
+      setStudents(arr);
+    })
+  }, []);
+
+  
+  // console.log(students);
   return (
     <Page title="User | Minimal-UI">
       <Container>
@@ -160,7 +183,7 @@ export default function User() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={students.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
@@ -171,7 +194,6 @@ export default function User() {
                     .map((row) => {
                       const { id, name, rollNumber, avatarUrl, hostel } = row;
                       const isItemSelected = selected.indexOf(name) !== -1;
-
                       return (
                         <TableRow
                           hover
@@ -208,7 +230,8 @@ export default function User() {
                           </TableCell> */}
 
                           <TableCell align="right">
-                            <UserMoreMenu />
+                            {/* {if(id) <} */}
+                            <UserMoreMenu id={rollNumber}/>
                           </TableCell>
                         </TableRow>
                       );
@@ -235,7 +258,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={students.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

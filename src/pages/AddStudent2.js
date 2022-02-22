@@ -8,17 +8,12 @@ import AuthLayout from '../layouts/AuthLayout';
 import Page from '../components/Page';
 import  StudentForm  from './StudentForm';
 import AuthSocial from '../sections/authentication/AuthSocial';
-
-import React from 'react'
-import { render } from 'react-dom'
-// import VideoRecorder from 'react-video-recorder'
+// new
+import fileupload from '../components/fileupload';
 
 
-
-//
-// import fileupload from '../components/fileupload';
 // ----------------------------------------------------------------------
-
+//
 const RootStyle = styled(Page)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex'
@@ -45,12 +40,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(12, 0)
 }));
 
-// const App = () => (
-//   <VideoRecorder />
-// )
-
-
-
 // ----------------------------------------------------------------------
 
 export default function Register() {
@@ -58,11 +47,9 @@ export default function Register() {
     <RootStyle title="Register | Minimal-UI">
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          Capture the student face
+          Capture the student face 
         </Typography>
-        {/* <img alt="register" src="/static/illustrations/illustration_register.png" /> */}
-        {/* render(<App />, document.getElementById('root')) */}
-
+        <img alt="register" src="/static/illustrations/illustration_register.png" />
       </SectionStyle>
 
       <Container>
@@ -79,7 +66,7 @@ export default function Register() {
           {/* <AuthSocial /> */}
 
           <StudentForm />
-          {/* <fileupload /> */}
+          <fileupload />
           {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" color="textPrimary">

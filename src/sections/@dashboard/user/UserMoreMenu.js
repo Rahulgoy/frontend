@@ -5,11 +5,23 @@ import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/mat
 // component
 import Iconify from '../../../components/Iconify';
 
+import { getDatabase, ref as ref1, onValue, set} from "firebase/database";
+import { LoadingButton } from '@mui/lab';
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu() {
+export default function UserMoreMenu({id}) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const handleDeleteStudent = (id) => {
+    // mPostReference = FirebaseDatabase.getInstance().getReference()
+    //                     .child("quotes").child(id);
+    // mPostReference.removeValue();
+    console.log(id);
+    const db=getDatabase();
+    set(ref1(db, 'students/'+id),null);
+    // db.child(`students/` + id).remove();
+  };
 
   return (
     <>
@@ -31,7 +43,16 @@ export default function UserMoreMenu() {
           <ListItemIcon>
             <Iconify icon="eva:trash-2-outline" width={24} height={24} />
           </ListItemIcon>
-          <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
+          {/* <Button  primary="Delete" primaryTypographyProps={{ variant: 'body2' }} >Delete<Button/> */}
+          <LoadingButton
+            fullWidth
+            onClick={() => handleDeleteStudent(id)}
+            size="small"
+            type="submit"
+            variant="contained"
+          >
+            Delete
+          </LoadingButton>
         </MenuItem>
 
         <MenuItem component={RouterLink} to="#" sx={{ color: 'text.secondary' }}>
