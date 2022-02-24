@@ -42,6 +42,7 @@ function RegisterForm() {
       createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
       .then((userCredential) => {
         const user = userCredential.user;
+        user.auth.name = formik.values.firstName + " " + formik.values.lastName
         console.log("Registered user: ", user);
         formik.initialValues.email = "";
         formik.initialValues.password = "";

@@ -9,6 +9,8 @@ import Page from '../components/Page';
 import { LoginForm } from '../sections/authentication/login';
 import AuthSocial from '../sections/authentication/AuthSocial';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -42,20 +44,20 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 export default function Login() {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.value);
 
+  useEffect(() => {
+    if (user) {
+      // User is signed in.
+      console.log(user)
+      navigate('/dashboard/app', { replace: true });
+      
+    } else {
+      console.log("User not logged in")
+      // User is not signed in.
+    }
+  },[user])
 
-  const auth=getAuth();
-onAuthStateChanged(auth,function(user) {
-  if (user) {
-    // User is signed in.
-    console.log(user)
-    navigate('/dashboard/app', { replace: true });
-    
-  } else {
-    console.log("User not logged in")
-    // User is not signed in.
-  }
-});
   return (
     <RootStyle title="Login">
       <AuthLayout>

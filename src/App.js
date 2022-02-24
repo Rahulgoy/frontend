@@ -24,7 +24,7 @@ export default function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(saveUser(user.refreshToken));
+        dispatch(saveUser(user));
       } else {
         dispatch(saveUser(undefined));
       }

@@ -1,4 +1,4 @@
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography } from '@mui/material';
@@ -8,6 +8,8 @@ import AuthLayout from '../layouts/AuthLayout';
 import Page from '../components/Page';
 import { RegisterForm } from '../sections/authentication/register';
 import AuthSocial from '../sections/authentication/AuthSocial';
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +41,20 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Register() {
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.value);
+
+  useEffect(() => {
+    if (user) {
+      // User is signed in.
+      console.log(user)
+      navigate('/dashboard/app', { replace: true });
+      
+    } else {
+      console.log("User not logged in")
+      // User is not signed in.
+    }
+  },[user])
   return (
     <RootStyle title="Register">
       <AuthLayout>
