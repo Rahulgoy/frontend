@@ -52,7 +52,7 @@ function AccountPopover() {
     signOut(auth)
       .then(() => {
         console.log("user signed out");
-        navigate("/login",{replace:true})
+        navigate("/",{replace:true})
       })
       .catch((error) => {
         console.log("error", error);

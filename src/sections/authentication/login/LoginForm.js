@@ -105,7 +105,7 @@ function LoginForm() {
             label="Remember me"
           />
 
-          <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
+          <Link component={RouterLink} variant="subtitle2" to="/reset" underline="hover">
             Forgot password?
           </Link>
         </Stack>

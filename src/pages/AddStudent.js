@@ -29,7 +29,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
-  maxWidth: 464,
+  maxWidth: 480,
   maxHeight: '70',
   display: 'flex',
   flexDirection: 'column',
@@ -44,7 +44,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   minHeight: '100vh',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: theme.spacing(12, 0)
+  padding: theme.spacing(0, 0)
 }));
 
 // const App = () => (
@@ -120,23 +120,23 @@ export default function Register() {
 
       {/* </SectionStyle> */}
 
-      <Container maxWidth="sm">
+      <Container sx = {{ mx: "auto" }} maxWidth="sm">
         
-      <Typography style={{display:'flex', justifyItems:'center'}} variant="h5" sx={{ mx: "auto", mb: 0 }}>
-          Capture the Student's Face
+      <Typography align = "center" variant="h4" sx={{ mx: "auto", mb: 4 }}>
+          Register New Student
         </Typography>
-        <Grid display='flex' backgroundColor='red' justifyItems='center' direction='row'>
-          <Avatar style={{alignSelf: 'center'}} src={url} sx={{ mx: "auto",width: 150, height: 150  }} />
-        </Grid>
         
-        <LoadingButton sx={{ mx:"auto"}} variant="text" component="label" onClick={handleChoose}>{Choose}
+        <Avatar style={{alignSelf: 'center'}} src={url} sx={{ mx: "auto",width: 150, height: 150  }} />
+        
+        <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'space-evenly',background:"blue"}}>
+          <LoadingButton variant="outlined" component="label" onClick={handleChoose}>{Choose}
   
-          <input hidden type="file" onChange={handleImageChange}/>
+            <input hidden type="file" onChange={handleImageChange}/>
 
-        </LoadingButton>
+          </LoadingButton>
         
-        <LoadingButton sx={{ mx:"auto"}} variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
-
+          <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
+        </Box>
     
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
