@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography } from '@mui/material';
+import { Box, Card, Link, Container, Grid,Typography } from '@mui/material';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 // components
@@ -55,7 +55,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 // var displayName=false;
-var Choose="Choose";
+var Choose="Choose Image";
+// var Choose="Choose"
 export default function Register() {
     const storage = getStorage();
     const [image, setImage] = useState(null);
@@ -95,21 +96,8 @@ export default function Register() {
 
   return (
     <RootStyle title="Register">
-      <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
+      {/* <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
         
-        <Typography style={{display:'flex', justifyItems:'center'}} variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          Capture the student face
-        </Typography>
-        <div style={{display:'flex-end',backgroundColor:'red',justifyItems:'center'}}>
-          <Avatar src={url} sx={{ width: 150, height: 150  }} />
-        </div>
-        <LoadingButton variant="text" component="label" onClick={handleChoose}>{Choose}
-  
-          <input hidden type="file" onChange={handleImageChange}/>
-
-        </LoadingButton>
-        
-        <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
       {/* // 'file' comes from the Blob or File API
         uploadBytes(storageRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
@@ -130,13 +118,30 @@ export default function Register() {
         {/* <img alt="register" src="/static/illustrations/illustration_register.png" /> */}
         {/* render(<App />, document.getElementById('root')) */}
 
-      </SectionStyle>
+      {/* </SectionStyle> */}
 
-      <Container>
+      <Container maxWidth="sm">
+        
+      <Typography style={{display:'flex', justifyItems:'center'}} variant="h5" sx={{ mx: "auto", mb: 0 }}>
+          Capture the Student's Face
+        </Typography>
+        <Grid display='flex' backgroundColor='red' justifyItems='center' direction='row'>
+          <Avatar style={{alignSelf: 'center'}} src={url} sx={{ mx: "auto",width: 150, height: 150  }} />
+        </Grid>
+        
+        <LoadingButton sx={{ mx:"auto"}} variant="text" component="label" onClick={handleChoose}>{Choose}
+  
+          <input hidden type="file" onChange={handleImageChange}/>
+
+        </LoadingButton>
+        
+        <LoadingButton sx={{ mx:"auto"}} variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
+
+    
         <ContentStyle>
           <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
-              Register a new student.
+            <Typography variant="h4" sx={{ mx: "auto"}} gutterBottom>
+              Register a New Student
             </Typography>
             {/* <Typography sx={{ color: 'text.secondary' }}>
               Free forever. No credit card needed.
@@ -159,7 +164,7 @@ export default function Register() {
             .
           </Typography> */}
 
-          {/* <Typography
+          {/* <Typography 
             variant="subtitle2"
             sx={{
               mt: 3,
@@ -173,6 +178,12 @@ export default function Register() {
             </Link>
           </Typography> */}
         </ContentStyle>
+        <LoadingButton variant="text" component="label" onClick={handleChoose}>{Choose}
+  
+        <input hidden type="file" onChange={handleImageChange}/>  
+
+        </LoadingButton>
+        <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
       </Container>
     </RootStyle>
   );
