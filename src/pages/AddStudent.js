@@ -128,7 +128,7 @@ export default function Register() {
         
         <Avatar style={{alignSelf: 'center'}} src={url} sx={{ mx: "auto",width: 150, height: 150  }} />
         
-        <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'space-evenly',background:"blue"}}>
+        <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'center'}}>
           <LoadingButton variant="outlined" component="label" onClick={handleChoose}>{Choose}
   
             <input hidden type="file" onChange={handleImageChange}/>
