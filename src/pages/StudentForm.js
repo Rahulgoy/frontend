@@ -9,7 +9,8 @@ import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../components/Iconify';
 import { getDatabase, ref, set } from "firebase/database";
-import { getStorage } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref as ref_storage, uploadBytes } from "firebase/storage";
+
 
 function writeUserData(values, imageUrl){
     const db = getDatabase();
@@ -55,6 +56,46 @@ function StudentForm({imageUrl}) {
       navigate('/dashboard/user', { replace: true });
     }
   });
+  var Choose="Choose Video";
+  const storage = getStorage();
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState(null);
+    const handleImageChange = (e) => {
+        if(e.target.files[0]){
+            setImage(e.target.files[0]);  
+            // window.alert("here");
+            // window.alert(e.target.files);
+            // console.log(e.target.files[0].name);
+            // displayName=!displayName;
+            Choose="File : "+e.target.files[0].name;
+        }
+    };
+    const handleChoose = () =>{
+      Choose="File :";
+      // window.alert(e.target.files[0]);
+    }
+    const handleVideoUpload = () => {
+        const imageRef = ref_storage(storage, "image");
+        uploadBytes(imageRef, image)
+        .then(()=>{
+            getDownloadURL(imageRef).then((url)=>{
+                setUrl(url);
+            })
+            .catch((error)=>{
+                console.log(error.message,"Error");
+            });
+            setImage(null);
+        })
+        .catch((error)=>{
+            console.log(error.message);
+        });
+    };
+
+    console.log(url);
+
+
+
+
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -109,7 +150,13 @@ function StudentForm({imageUrl}) {
                 helperText={touched.hostel && errors.hostel}
             />
             </Stack>
-
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center">
+            <LoadingButton variant="outlined" component="label" onClick={handleChoose}>{Choose}
+              <input hidden type="file" onChange={handleImageChange}/>  
+            </LoadingButton>
+            <LoadingButton variant="contained" component="label" onClick={handleVideoUpload}>Upload</LoadingButton>
+            </Stack>
+            
           <LoadingButton
             fullWidth
             size="large"

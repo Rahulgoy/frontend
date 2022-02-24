@@ -1,7 +1,7 @@
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Grid,Typography } from '@mui/material';
+import { Box, Card, Link, Container, Grid,Typography,Stack } from '@mui/material';
 // layouts
 import AuthLayout from '../layouts/AuthLayout';
 // components
@@ -41,7 +41,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
+  minHeight: '45vh',
   flexDirection: 'column',
   justifyContent: 'center',
   padding: theme.spacing(0, 0)
@@ -55,7 +55,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 // var displayName=false;
-var Choose="Choose Image";
+var Choose="Choose Profile Pic";
 // var Choose="Choose"
 export default function Register() {
     const storage = getStorage();
@@ -127,8 +127,9 @@ export default function Register() {
         </Typography>
         
         <Avatar style={{alignSelf: 'center'}} src={url} sx={{ mx: "auto",width: 150, height: 150  }} />
-        
-        <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'center'}}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center" mt={4}>
+            
+        {/* <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'center'}}> */}
           <LoadingButton variant="outlined" component="label" onClick={handleChoose}>{Choose}
   
             <input hidden type="file" onChange={handleImageChange}/>
@@ -136,17 +137,17 @@ export default function Register() {
           </LoadingButton>
         
           <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
-        </Box>
-    
+        {/* </Box> */}
+        </Stack>
         <ContentStyle>
-          <Box sx={{ mb: 5 }}>
+          {/* <Box sx={{ mb: 5 }}>
             <Typography variant="h4" sx={{ mx: "auto"}} gutterBottom>
               Register a New Student
             </Typography>
-            {/* <Typography sx={{ color: 'text.secondary' }}>
+            <Typography sx={{ color: 'text.secondary' }}>
               Free forever. No credit card needed.
-            </Typography> */}
-          </Box>
+            </Typography>
+          </Box> */}
 
           {/* <AuthSocial /> */}
 
@@ -178,12 +179,7 @@ export default function Register() {
             </Link>
           </Typography> */}
         </ContentStyle>
-        <LoadingButton variant="text" component="label" onClick={handleChoose}>{Choose}
-  
-        <input hidden type="file" onChange={handleImageChange}/>  
-
-        </LoadingButton>
-        <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
+        
       </Container>
     </RootStyle>
   );

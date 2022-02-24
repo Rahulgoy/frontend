@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, Navigate } from 'react-router-dom';
 // material
 import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
@@ -52,7 +52,8 @@ function AccountPopover() {
     signOut(auth)
       .then(() => {
         console.log("user signed out");
-        navigate("/",{replace:true})
+        <Navigate replace to='/login'/>
+        // navigate("/",{replace:true})
       })
       .catch((error) => {
         console.log("error", error);
