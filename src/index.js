@@ -1,3 +1,7 @@
+// 
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
@@ -15,7 +19,9 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <HelmetProvider>
     <BrowserRouter>
+    <Provider store={store}>
       <App />
+    </Provider>
     </BrowserRouter>
   </HelmetProvider>,
   document.getElementById('root')

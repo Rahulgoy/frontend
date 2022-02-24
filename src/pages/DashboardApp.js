@@ -1,7 +1,7 @@
 // material
 import { Box, Grid, Container, Typography } from '@mui/material';
 //mocks
-import account from '../../_mocks_/account';
+import account from '../_mocks_/account';
 // components
 import Page from '../components/Page';
 // import {

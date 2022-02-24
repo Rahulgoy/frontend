@@ -8,8 +8,10 @@ import Iconify from '../../components/Iconify';
 import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
-import { signOut } from '../../store/actions/authActions';
+// import { signOut } from '../../store/actions/authActions';
 import { connect } from "react-redux";
+import { getAuth, signOut} from "firebase/auth";
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -33,6 +35,7 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 function AccountPopover() {
+  const auth = getAuth();
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -42,6 +45,16 @@ function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleSignOut = () => {
+    signOut(auth)
+      .then(() => {
+        console.log("user signed out");
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }
 
   return (
     <>
@@ -107,7 +120,7 @@ function AccountPopover() {
         ))}
 
         <Box sx={{ p: 2, pt: 1.5 }}>
-          <Button onClick={signOut} fullWidth color="inherit" variant="outlined">
+          <Button onClick={handleSignOut} fullWidth color="inherit" variant="outlined">
             Logout
           </Button>
         </Box>
@@ -116,16 +129,4 @@ function AccountPopover() {
   );
 }
 
-const mapStateToProps = (state) => {
-  // console.log(state);
-  return {
-    auth: state.firebase.auth,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signOut: () => dispatch(signOut()),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(AccountPopover);
+export default AccountPopover;

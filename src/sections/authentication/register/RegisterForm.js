@@ -9,10 +9,11 @@ import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/Iconify';
 import { signUp } from '../../../store/actions/authActions';
-
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 // ----------------------------------------------------------------------
 function RegisterForm() {
+  const auth = getAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -35,8 +36,29 @@ function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      signUp(formik.values);
+      // signUp(formik.values);
       console.log(formik.values);
+
+      createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Registered user: ", user);
+        formik.initialValues.email = "";
+        formik.initialValues.password = "";
+        formik.initialValues.firstName = "";
+        formik.initialValues.lastName = "";
+        // setEmail("");
+        // setPassword("");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("Error ocured: ", errorCode, errorMessage);
+      });
+
+
+
+
       navigate('/dashboard/app', { replace: true });
     }
   });
@@ -108,17 +130,18 @@ function RegisterForm() {
     </FormikProvider>
   );
 }
-const mapStateToProps = (state) => {
-  return {
-    auth: state.firebase.auth,
-    authError: state.auth.authError,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     auth: state.firebase.auth,
+//     authError: state.auth.authError,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signUp: (creds) => dispatch(signUp(creds)),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     signUp: (creds) => dispatch(signUp(creds)),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);
+// export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);
+export default RegisterForm;

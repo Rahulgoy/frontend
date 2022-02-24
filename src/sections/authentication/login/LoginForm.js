@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { connect } from "react-redux";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 // material
 import {
   Link,
@@ -23,6 +23,7 @@ import Iconify from '../../../components/Iconify';
 // ----------------------------------------------------------------------
 
 function LoginForm() {
+  const auth=getAuth();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -39,21 +40,35 @@ function LoginForm() {
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
-      const user = signIn(formik.values);
+      // const user = signIn(formik.values);
 
-      const auth=getAuth();
-      onAuthStateChanged(auth,function(user) {
-        if (user) {
-          // User is signed in.
-          console.log(user)
-          navigate('/dashboard/app', { replace: true });
-          
-        } else {
-          console.log("User not logged in")
-          navigate('/login', { replace: true });
-          // User is not signed in.
-        }
+      signInWithEmailAndPassword(auth, formik.values.email, formik.values.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log("Singed in user: ", user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log("An error occured: ", errorCode, errorMessage);
       });
+
+
+
+
+      
+      // onAuthStateChanged(auth,function(user) {
+      //   if (user) {
+      //     // User is signed in.
+      //     console.log(user)
+      //     navigate('/dashboard/app', { replace: true });
+          
+      //   } else {
+      //     console.log("User not logged in")
+      //     navigate('/login', { replace: true });
+      //     // User is not signed in.
+      //   }
+      // });
 
       console.log(formik.values);
       navigate('/dashboard/app', { replace: true });
@@ -125,17 +140,18 @@ function LoginForm() {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    authError: state.auth.authError,
-    auth: state.firebase.auth,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     authError: state.auth.authError,
+//     auth: state.firebase.auth,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    signIn: (creds) => dispatch(signIn(creds)),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     signIn: (creds) => dispatch(signIn(creds)),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+// export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginForm;

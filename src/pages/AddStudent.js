@@ -16,8 +16,7 @@ import { LoadingButton } from '@mui/lab';
 // 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
-const storage = getStorage();
-const storageRef = ref(storage, 'some-child');
+
 
 
 // ----------------------------------------------------------------------
@@ -58,6 +57,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // var displayName=false;
 var Choose="Choose";
 export default function Register() {
+    const storage = getStorage();
     const [image, setImage] = useState(null);
     const [url, setUrl] = useState(null);
     const handleImageChange = (e) => {

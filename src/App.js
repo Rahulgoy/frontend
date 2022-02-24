@@ -1,6 +1,5 @@
-// // Store
-import { Provider } from 'react-redux';
-import store from './store/store';
+import { useEffect } from 'react';
+
 // routes
 import Router from './routes';
 // theme
@@ -10,29 +9,35 @@ import GlobalStyles from './theme/globalStyles';
 import ScrollToTop from './components/ScrollToTop';
 import { BaseOptionChartStyle } from './components/charts/BaseOptionChart';
 import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "./config/Firebase";
+import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { saveUser } from "./redux/slices/authSlice";
 // ----------------------------------------------------------------------
 
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDlh8fdpOIas9sFLquKbIbGoRyN6fomzLU",
-  authDomain: "face-recognition-51469.firebaseapp.com",
-  databaseURL: "https://face-recognition-51469-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "face-recognition-51469",
-  storageBucket: "face-recognition-51469.appspot.com",
-  messagingSenderId: "1018849117258",
-  appId: "1:1018849117258:web:16b8689ce10c064d0d52b3"
-};
-const app = initializeApp(firebaseConfig);
-
 export default function App() {
+  initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const user = useSelector((state) => state.auth.value);
+  console.log("user from state", user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(saveUser(user.refreshToken));
+      } else {
+        dispatch(saveUser(undefined));
+      }
+    });
+  }, [auth, dispatch]);
   return (
-    <Provider store={store}>
+    
     <ThemeConfig>
       <ScrollToTop />
       <GlobalStyles />
       <BaseOptionChartStyle />
       <Router />
     </ThemeConfig>
-    </Provider>
+    
   );
 }
