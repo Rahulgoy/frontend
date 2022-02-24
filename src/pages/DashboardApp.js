@@ -5,6 +5,10 @@ import account from '../_mocks_/account';
 // components
 import Page from '../components/Page';
 import { useSelector, useDispatch } from "react-redux";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { saveUser } from "../redux/slices/authSlice";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 // import {
 //   AppTasks,
 //   AppNewUsers,
@@ -23,7 +27,22 @@ import { useSelector, useDispatch } from "react-redux";
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+  const navigate = useNavigate();
+  const auth = getAuth();
   const user = useSelector((state) => state.auth.value);
+  console.log("user from state", user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(saveUser(user));
+
+      } else {
+        dispatch(saveUser(undefined));
+        navigate('/login', { replace: true });
+      }
+    });
+  }, [auth, dispatch]);
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
