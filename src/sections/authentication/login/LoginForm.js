@@ -1,9 +1,10 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { connect } from "react-redux";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+
 // material
 import {
   Link,
@@ -36,7 +37,7 @@ function LoginForm() {
     initialValues: {
       email: '',
       password: '',
-      remember: true
+      remember: false
     },
     validationSchema: LoginSchema,
     onSubmit: () => {
@@ -52,23 +53,6 @@ function LoginForm() {
         const errorMessage = error.message;
         console.log("An error occured: ", errorCode, errorMessage);
       });
-
-
-      
-
-      
-      // onAuthStateChanged(auth,function(user) {
-      //   if (user) {
-      //     // User is signed in.
-      //     console.log(user)
-      //     navigate('/dashboard/app', { replace: true });
-          
-      //   } else {
-      //     console.log("User not logged in")
-      //     navigate('/login', { replace: true });
-      //     // User is not signed in.
-      //   }
-      // });
 
       console.log(formik.values);
       navigate('/dashboard/app', { replace: true });

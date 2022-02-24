@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 // material
 import { alpha } from '@mui/material/styles';
 import { Button, Box, Divider, MenuItem, Typography, Avatar, IconButton } from '@mui/material';
@@ -36,6 +36,7 @@ const MENU_OPTIONS = [
 
 function AccountPopover() {
   const auth = getAuth();
+  const navigate = useNavigate();
   const user = useSelector((state) => state.auth.value);
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -51,6 +52,7 @@ function AccountPopover() {
     signOut(auth)
       .then(() => {
         console.log("user signed out");
+        navigate("/login",{replace:true})
       })
       .catch((error) => {
         console.log("error", error);
@@ -90,10 +92,10 @@ function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {user.displayName}
+          {user===undefined ? '':user.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user.email}
+          {user===undefined ? '':user.email}
           </Typography>
         </Box>
 

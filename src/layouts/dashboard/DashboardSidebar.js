@@ -46,7 +46,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const user = useSelector((state) => state.auth.value);
   const isDesktop = useResponsive('up', 'lg');
-
+  
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -71,7 +71,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {user.displayName}
+                {user===undefined ? '':user.displayName}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}

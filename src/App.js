@@ -26,7 +26,7 @@ export default function App() {
       if (user) {
         dispatch(saveUser(user));
       } else {
-        dispatch(saveUser(undefined));
+        dispatch(saveUser(null));
       }
     });
   }, [auth, dispatch]);

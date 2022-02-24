@@ -96,10 +96,13 @@ export default function Register() {
   return (
     <RootStyle title="Register">
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
+        
+        <Typography style={{display:'flex', justifyItems:'center'}} variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
           Capture the student face
-          <Avatar style={{display:'flex', justifyItems:'center'}} src={url} sx={{ width: 150, height: 150  }} />
         </Typography>
+        <div style={{display:'flex-end',backgroundColor:'red',justifyItems:'center'}}>
+          <Avatar src={url} sx={{ width: 150, height: 150  }} />
+        </div>
         <LoadingButton variant="text" component="label" onClick={handleChoose}>{Choose}
   
           <input hidden type="file" onChange={handleImageChange}/>

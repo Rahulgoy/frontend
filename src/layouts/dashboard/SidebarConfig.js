@@ -40,16 +40,16 @@ const sidebarConfig = [
     icon: getIcon('eva:search-outline')
   },
 
-  {
-    title: 'Login',
-    path: '/login',
-    icon: getIcon('eva:lock-fill')
-  },
-  {
-    title: 'Register',
-    path: '/register',
-    icon: getIcon('eva:person-add-fill')
-  },
+  // {
+  //   title: 'Login',
+  //   path: '/login',
+  //   icon: getIcon('eva:lock-fill')
+  // },
+  // {
+  //   title: 'Register',
+  //   path: '/register',
+  //   icon: getIcon('eva:person-add-fill')
+  // },
 
   // SEE later
   // {

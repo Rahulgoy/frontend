@@ -69,7 +69,7 @@ function RegisterForm() {
 
 
 
-      navigate('/dashboard/app', { replace: true });
+      navigate('/', { replace: true });
     }
   });
 
