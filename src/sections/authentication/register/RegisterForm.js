@@ -8,8 +8,8 @@ import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/Iconify';
-import { signUp } from '../../../store/actions/authActions';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+// import { signUp } from '../../../store/actions/authActions';
+import { getAuth, createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 
 // ----------------------------------------------------------------------
 function RegisterForm() {
@@ -42,7 +42,16 @@ function RegisterForm() {
       createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        user.auth.name = formik.values.firstName + " " + formik.values.lastName
+        
+        updateProfile(auth.currentUser, {
+          displayName: formik.values.firstName + " " + formik.values.lastName, photoURL: ""
+        }).then((userRecord) => {
+          // See the UserRecord reference doc for the contents of userRecord.
+          console.log('Successfully created new user:', userRecord);
+        })
+        .catch((error) => {
+          console.log('Error creating new user:', error);
+        });
         console.log("Registered user: ", user);
         formik.initialValues.email = "";
         formik.initialValues.password = "";

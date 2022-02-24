@@ -4,6 +4,7 @@ import { Box, Grid, Container, Typography } from '@mui/material';
 import account from '../_mocks_/account';
 // components
 import Page from '../components/Page';
+import { useSelector, useDispatch } from "react-redux";
 // import {
 //   AppTasks,
 //   AppNewUsers,
@@ -22,11 +23,12 @@ import Page from '../components/Page';
 // ----------------------------------------------------------------------
 
 export default function DashboardApp() {
+  const user = useSelector((state) => state.auth.value);
   return (
     <Page title="Dashboard">
       <Container maxWidth="xl">
         <Box sx={{ pb: 5 }}>
-          <Typography variant="h5">Hi {account.displayName}, Welcome back</Typography>
+          <Typography variant="h5">Hi {user.displayName}, Welcome back</Typography>
         </Box>
         {/* <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>

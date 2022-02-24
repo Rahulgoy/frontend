@@ -11,7 +11,7 @@ import account from '../../_mocks_/account';
 // import { signOut } from '../../store/actions/authActions';
 import { connect } from "react-redux";
 import { getAuth, signOut} from "firebase/auth";
-
+import { useSelector, useDispatch } from "react-redux";
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -36,6 +36,7 @@ const MENU_OPTIONS = [
 
 function AccountPopover() {
   const auth = getAuth();
+  const user = useSelector((state) => state.auth.value);
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
 
@@ -89,10 +90,10 @@ function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-            {account.displayName}
+            {user.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user.email}
           </Typography>
         </Box>
 
