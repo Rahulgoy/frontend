@@ -9,7 +9,6 @@ import MenuPopover from '../../components/MenuPopover';
 //
 import account from '../../_mocks_/account';
 // import { signOut } from '../../store/actions/authActions';
-import { connect } from "react-redux";
 import { getAuth, signOut} from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 // ----------------------------------------------------------------------

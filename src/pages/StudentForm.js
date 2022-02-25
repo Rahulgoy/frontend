@@ -10,9 +10,12 @@ import { LoadingButton } from '@mui/lab';
 import Iconify from '../components/Iconify';
 import { getDatabase, ref, set } from "firebase/database";
 import { getDownloadURL, getStorage, ref as ref_storage, uploadBytes } from "firebase/storage";
+import Avatar from "@mui/material/Avatar";
 
+function writeUserData(values, imageUrl, videoUrl){
 
-function writeUserData(values, imageUrl){
+    console.log(imageUrl)
+    console.log(videoUrl)
     const db = getDatabase();
     // console.log(db);
     set(ref(db,'students/'+values.rollNumber),{
@@ -20,15 +23,18 @@ function writeUserData(values, imageUrl){
         email: values.email,
         rollNumber: values.rollNumber,
         hostel: values.hostel,
-        imageUrl : imageUrl
+        imageUrl : imageUrl,
+        videoUrl: videoUrl
     });
 }
 
 
 
 // ----------------------------------------------------------------------
-function StudentForm({imageUrl}) {
+function StudentForm() {
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null);
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -40,46 +46,26 @@ function StudentForm({imageUrl}) {
     // hostel: Yup.string().uppercase().required('Hostel is Required').max(1,'TOO Long!')
     hostel: Yup.string().required('Hostel is Required').matches(/^[A-Z]+$/,'Must be Hostel name')
   });
-
-  const formik = useFormik({
-    initialValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      rollNumber: '',
-      hostel: ''
-    },
-    validationSchema: RegisterSchema,
-    onSubmit: () => {
-      writeUserData(formik.values, imageUrl);
-    //   console.log(formik.values);
-      navigate('/dashboard/user', { replace: true });
-    }
-  });
-  var Choose="Choose Video";
-  const storage = getStorage();
+  // Image Upload
     const [image, setImage] = useState(null);
-    const [url, setUrl] = useState(null);
+    const [chooseImg, setChooseImg] = useState("Choose Profile Pic");
     const handleImageChange = (e) => {
         if(e.target.files[0]){
             setImage(e.target.files[0]);  
-            // window.alert("here");
-            // window.alert(e.target.files);
-            // console.log(e.target.files[0].name);
-            // displayName=!displayName;
-            Choose="File : "+e.target.files[0].name;
+            setChooseImg("File : "+e.target.files[0].name);
         }
     };
-    const handleChoose = () =>{
-      Choose="File :";
+    const handleChooseImg = () =>{
+      setChooseImg("File :");
       // window.alert(e.target.files[0]);
     }
-    const handleVideoUpload = () => {
-        const imageRef = ref_storage(storage, "image");
+    const handleImageUpload = () => {
+        const imageRef = ref_storage(storage, `images/${image.name}`);
+        // console.log(imageRef);
         uploadBytes(imageRef, image)
         .then(()=>{
             getDownloadURL(imageRef).then((url)=>{
-                setUrl(url);
+              setImageUrl(url);
             })
             .catch((error)=>{
                 console.log(error.message,"Error");
@@ -91,11 +77,67 @@ function StudentForm({imageUrl}) {
         });
     };
 
-    console.log(url);
 
 
+  // Video Upload
+  const storage = getStorage();
+    const [video, setVideo] = useState(null);
+    const [chooseVid, setChooseVid] = useState("Choose Video");
+    const handlevideoChange = (e) => {
+        if(e.target.files[0]){
+            setVideo(e.target.files[0]);  
+            // window.alert("here");
+            // window.alert(e.target.files);
+            // console.log(e.target.files[0].name);
+            // displayName=!displayName;
+            setChooseVid("File : "+e.target.files[0].name);
+        }
+    };
+    const handleChooseVid = () =>{
+      setChooseVid("File :");
+      // window.alert(e.target.files[0]);
+    }
+    const handleVideoUpload = () => {
+        const imageRef = ref_storage(storage, `videos/${video.name}`);
+        uploadBytes(imageRef, video)
+        .then(()=>{
+            getDownloadURL(imageRef).then((url)=>{
+                setVideoUrl(url);
+            })
+            .catch((error)=>{
+                console.log(error.message,"Error");
+            });
+            setVideo(null);
+        })
+        .catch((error)=>{
+            console.log(error.message);
+        });
+    };
 
+    console.log(video);
 
+    const formik = useFormik({
+      initialValues: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        rollNumber: '',
+        hostel: '',
+      },
+      validationSchema: RegisterSchema,
+      onSubmit: () => {
+        try{
+          handleImageUpload();
+        }catch{
+          console.log("Not working1");
+        }
+        
+        handleVideoUpload();
+        writeUserData(formik.values, imageUrl, videoUrl);
+      //   console.log(formik.values);
+        navigate('/dashboard/user', { replace: true });
+      }
+    });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
@@ -103,6 +145,13 @@ function StudentForm({imageUrl}) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
+          <Avatar style={{alignSelf: 'center'}} src={imageUrl} sx={{ mx: "auto",width: 150, height: 150  }} />
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center" mt={4}>
+            <LoadingButton variant="outlined" component="label" onClick={handleChooseImg}>{chooseImg}
+              <input hidden type="file" onChange={handleImageChange}/>
+            </LoadingButton>
+            <LoadingButton variant="contained" component="label" onClick={handleImageUpload}>Upload</LoadingButton>
+          </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
@@ -151,8 +200,8 @@ function StudentForm({imageUrl}) {
             />
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center">
-            <LoadingButton variant="outlined" component="label" onClick={handleChoose}>{Choose}
-              <input hidden type="file" onChange={handleImageChange}/>  
+            <LoadingButton variant="outlined" component="label" onClick={handleChooseVid}>{chooseVid}
+              <input hidden type="file" onChange={handlevideoChange}/>  
             </LoadingButton>
             <LoadingButton variant="contained" component="label" onClick={handleVideoUpload}>Upload</LoadingButton>
             </Stack>

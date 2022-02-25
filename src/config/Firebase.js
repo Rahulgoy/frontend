@@ -1,4 +1,4 @@
-// import firebase from 'firebase/compat/app';
+import firebase from 'firebase/compat/app';
 // import 'firebase/compat/auth';
 // import 'firebase/compat/firestore';
 
@@ -14,5 +14,7 @@ export const firebaseConfig = {
 
 // firebase.firestore().settings({ timestampsInSnapshots: true });
 // export const db = firebaseConfig.firestore();
-
 // export default firebase;
+
+// const storage = firebase.storage();
+// export default storage;

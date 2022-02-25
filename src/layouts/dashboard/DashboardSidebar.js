@@ -14,7 +14,7 @@ import Scrollbar from '../../components/Scrollbar';
 import NavSection from '../../components/NavSection';
 //
 import sidebarConfig from './SidebarConfig';
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
   const user = useSelector((state) => state.auth.value);
   const isDesktop = useResponsive('up', 'lg');
-  
+
   useEffect(() => {
     if (isOpenSidebar) {
       onCloseSidebar();
@@ -68,10 +68,10 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            <Avatar src={user===undefined ? '':user.photoUrl} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {user===undefined ? '':user.displayName}
+              {user===undefined ? '':user.displayName}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}
@@ -85,7 +85,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {/* <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack
           alignItems="center"
           spacing={3}
@@ -114,13 +114,13 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             Upgrade to Pro
           </Button>
         </Stack>
-      </Box> */}
+      </Box>
     </Scrollbar>
   );
 
   return (
     <RootStyle>
-      {!!isDesktop && (
+      {!isDesktop && (
         <Drawer
           open={isOpenSidebar}
           onClose={onCloseSidebar}
