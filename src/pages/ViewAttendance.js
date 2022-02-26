@@ -170,8 +170,17 @@ export default function ViewAttendance() {
     })
   }, []);
 
+  // useEffect(() => {
+
+  //   filteredUsers.filter(user => user.)
+
+  //   })
+  // }, [finalDate]);
+
+
+
   // console.log(finalDate);
-  // console.log(filteredUsers);
+  console.log(filteredUsers);
   return (
     <Page title="Student Records">
       <Container>
