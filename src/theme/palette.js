@@ -29,7 +29,7 @@ const GREY = {
 };
 
 
-const PRIMARY = {
+export const PRIMARY = {
   lighter: '#EEEBDD',
   light: '#E3AFBC',
   main: '#CE1212',

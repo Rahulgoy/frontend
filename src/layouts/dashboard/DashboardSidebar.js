@@ -15,6 +15,7 @@ import NavSection from '../../components/NavSection';
 //
 import sidebarConfig from './SidebarConfig';
 import { useSelector, useDispatch } from "react-redux";
+import { PRIMARY } from '../../theme/palette';
 
 // ----------------------------------------------------------------------
 
@@ -69,12 +70,9 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
         <Link underline="none" component={RouterLink} to="#">
           <AccountStyle>
             <Avatar src={account.photoURL} alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
+            <Box sx={{ ml: 2, mx:"auto" }}>
+              <Typography variant="subtitle1" sx={{ color: PRIMARY["darker"] }}>
                 {user===undefined ? '':user.displayName}
-              </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
               </Typography>
             </Box>
           </AccountStyle>

@@ -15,7 +15,6 @@ import { render } from 'react-dom'
 import { LoadingButton } from '@mui/lab';
 // 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-import Avatar from "@mui/material/Avatar";
 
 
 
@@ -75,22 +74,7 @@ export default function Register() {
       Choose="File :";
       // window.alert(e.target.files[0]);
     }
-    const handleSubmit = () => {
-        const imageRef = ref(storage, "image");
-        uploadBytes(imageRef, image)
-        .then(()=>{
-            getDownloadURL(imageRef).then((url)=>{
-                setUrl(url);
-            })
-            .catch((error)=>{
-                console.log(error.message,"Error");
-            });
-            setImage(null);
-        })
-        .catch((error)=>{
-            console.log(error.message);
-        });
-    };
+    
 
     console.log(url);
 
@@ -125,20 +109,6 @@ export default function Register() {
       <Typography align = "center" variant="h4" sx={{ mx: "auto", mb: 4 }}>
           Register New Student
         </Typography>
-        
-        <Avatar style={{alignSelf: 'center'}} src={url} sx={{ mx: "auto",width: 150, height: 150  }} />
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center" mt={4}>
-            
-        {/* <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'center'}}> */}
-          <LoadingButton variant="outlined" component="label" onClick={handleChoose}>{Choose}
-  
-            <input hidden type="file" onChange={handleImageChange}/>
-
-          </LoadingButton>
-        
-          <LoadingButton variant="contained" component="label" onClick={handleSubmit}>Upload</LoadingButton>
-        {/* </Box> */}
-        </Stack>
         <ContentStyle>
           {/* <Box sx={{ mb: 5 }}>
             <Typography variant="h4" sx={{ mx: "auto"}} gutterBottom>
@@ -151,7 +121,7 @@ export default function Register() {
 
           {/* <AuthSocial /> */}
 
-          <StudentForm imageUrl={url}/>
+          <StudentForm/>
           
           {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;

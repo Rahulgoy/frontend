@@ -11,10 +11,14 @@ const HeaderStyle = styled('header')(({ theme }) => ({
   left: 0,
   lineHeight: 0,
   width: '100%',
+  display: 'flex',
+  alignItems: 'center',
   position: 'absolute',
-  padding: theme.spacing(3, 3, 0),
+  padding: theme.spacing(5,7,0),
+  justifyContent: 'space-between',
   [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(5, 5, 0)
+    alignItems: 'flex-start',
+    padding: theme.spacing(5,7,0)
   }
 }));
 

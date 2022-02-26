@@ -11,6 +11,7 @@ import AuthSocial from '../sections/authentication/AuthSocial';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from 'react';
+import { palette } from '../theme/palette';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +24,8 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
-  maxWidth: 464,
+  maxWidth: 600,
+  alignItems:'center',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -68,21 +70,18 @@ export default function Login() {
       </AuthLayout>
 
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          
-        </Typography>
-        <img src="/static/illustrations/illustration_login.png" alt="login" />
+        <img src="/static/illustrations/hostelO_1.png" alt="LoginPageIcon" />
       </SectionStyle>
 
-      <Container maxWidth="sm">
+      <Container maxWidth="xs" sx={{mx:"auto"}}>
         <ContentStyle>
-          <Stack sx={{ mb: 5 }}>
+          <Stack sx={{mb: 3 }}>
             <Typography variant="h4" gutterBottom>
-              Sign in!
+              Facial Surveillance System
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Enter your details below to sign in!</Typography>
           </Stack>
-          <AuthSocial />
+          {/* <AuthSocial /> */}
 
           <LoginForm />
 
