@@ -6,27 +6,14 @@ import {db} from '../config/Firebase.js';
 // material
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+
 // component
 import Iconify from '../components/Iconify';
 import { getDatabase, ref, set } from "firebase/database";
 import { getDownloadURL, getStorage, ref as ref_storage, uploadBytes } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
 
-function writeUserData(values, imageUrl, videoUrl){
 
-    console.log(imageUrl)
-    console.log(videoUrl)
-    const db = getDatabase();
-    // console.log(db);
-    set(ref(db,'students/'+values.rollNumber),{
-        name : values.firstName+" "+values.lastName,
-        email: values.email,
-        rollNumber: values.rollNumber,
-        hostel: values.hostel,
-        imageUrl : imageUrl,
-        videoUrl: videoUrl
-    });
-}
 
 
 
@@ -46,6 +33,32 @@ function StudentForm() {
     // hostel: Yup.string().uppercase().required('Hostel is Required').max(1,'TOO Long!')
     hostel: Yup.string().required('Hostel is Required').matches(/^[A-Z]+$/,'Must be Hostel name')
   });
+
+  const writeUserData = (values, imageUrl, videoUrl) => {
+
+    console.log(imageUrl);
+    console.log(videoUrl);
+    const db = getDatabase();
+    // console.log(db);
+    set(ref(db,'students/'+values.rollNumber),{
+        name : values.firstName+" "+values.lastName,
+        email: values.email,
+        rollNumber: values.rollNumber,
+        hostel: values.hostel,
+        imageUrl : imageUrl,
+        videoUrl : videoUrl,
+    });
+}
+
+
+
+
+
+
+
+
+
+
   // Image Upload
     const [image, setImage] = useState(null);
     const [chooseImg, setChooseImg] = useState("Choose Profile Pic");
@@ -57,14 +70,16 @@ function StudentForm() {
     };
     const handleChooseImg = () =>{
       setChooseImg("File :");
-      // window.alert(e.target.files[0]);
     }
-    const handleImageUpload = () => {
-        const imageRef = ref_storage(storage, `images/${image.name}`);
-        // console.log(imageRef);
+    const handleImageUpload = (image) => {
+      console.log("Image Upload")
+        if(image){
+          console.log("Image detected: ", image);
+          const imageRef = ref_storage(storage, `images/${image.name}`);
         uploadBytes(imageRef, image)
         .then(()=>{
             getDownloadURL(imageRef).then((url)=>{
+              console.log(url);
               setImageUrl(url);
             })
             .catch((error)=>{
@@ -75,6 +90,8 @@ function StudentForm() {
         .catch((error)=>{
             console.log(error.message);
         });
+        }
+        
     };
 
 
@@ -86,22 +103,18 @@ function StudentForm() {
     const handlevideoChange = (e) => {
         if(e.target.files[0]){
             setVideo(e.target.files[0]);  
-            // window.alert("here");
-            // window.alert(e.target.files);
-            // console.log(e.target.files[0].name);
-            // displayName=!displayName;
             setChooseVid("File : "+e.target.files[0].name);
         }
     };
     const handleChooseVid = () =>{
       setChooseVid("File :");
-      // window.alert(e.target.files[0]);
     }
-    const handleVideoUpload = () => {
-        const imageRef = ref_storage(storage, `videos/${video.name}`);
-        uploadBytes(imageRef, video)
+    const handleVideoUpload = (video) => {
+        if(video){
+          const videoRef = ref_storage(storage, `videos/${video.name}`);
+        uploadBytes(videoRef, video)
         .then(()=>{
-            getDownloadURL(imageRef).then((url)=>{
+            getDownloadURL(videoRef).then((url)=>{
                 setVideoUrl(url);
             })
             .catch((error)=>{
@@ -112,9 +125,10 @@ function StudentForm() {
         .catch((error)=>{
             console.log(error.message);
         });
+        }
     };
 
-    console.log(video);
+    // console.log(video);
 
     const formik = useFormik({
       initialValues: {
@@ -126,19 +140,40 @@ function StudentForm() {
       },
       validationSchema: RegisterSchema,
       onSubmit: () => {
-        try{
-          handleImageUpload();
-        }catch{
-          console.log("Not working1");
+
+        if(image){
+          handleImageUpload(image)
+          .then(()=>{
+            if(video){
+              handleVideoUpload(video)
+              .then(()=>{
+                writeUserData(formik.values, imageUrl, videoUrl);
+              }).catch((error)=>{
+                console.log(error.message,"Error");
+            });
+            }
+          }).catch((error)=>{
+            console.log(error.message,"Error");
+        });
+        }else if(video){
+          handleVideoUpload(video)
+              .then(()=>{
+                writeUserData(formik.values, imageUrl, videoUrl);
+              }).catch((error)=>{
+                console.log(error.message,"Error");
+            });
+        }else{
+          writeUserData(formik.values, imageUrl, videoUrl);
         }
         
-        handleVideoUpload();
-        writeUserData(formik.values, imageUrl, videoUrl);
+        
+        
       //   console.log(formik.values);
         navigate('/dashboard/user', { replace: true });
       }
     });
 
+    console.log(videoUrl)
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (

@@ -29,14 +29,15 @@ import {  UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
 import {UserListHeadAttendance} from '../sections/@dashboard/user/UserListHeadCustom';
 import USERLIST from '../_mocks_/user';
 import { getDatabase, ref, onValue} from "firebase/database";
-
+import * as XLSX from 'xlsx';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
   { id: 'rollNumber', label: 'Roll Number', alignRight: false },
+  { id: 'name', label: 'Name', alignRight: false },
   { id: 'hostel', label: 'Hostel', alignRight: false },
   { id: 'Date',label:'Date',alignRight:false },
+  { id: 'Time',label:'Time',alignRight:false },
   { id: 'Status',label:'Status',alignRight:false },
 ];
 
@@ -76,6 +77,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function ViewAttendance() {
+  const [finalDate, setFinalDate] = useState(null);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -83,6 +85,7 @@ export default function ViewAttendance() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [students, setStudents] = useState([]);
+  
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -134,6 +137,23 @@ export default function ViewAttendance() {
   const filteredUsers = applySortFilter(students, getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
+  
+  
+  const downloadExcel=()=>{
+    console.log("Download")
+    const workSheet=XLSX.utils.json_to_sheet(filteredUsers)
+    const workBook=XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workBook,workSheet,"students")
+    // Buffer
+    let buf = XLSX.write(workBook,{bookType:"xlsx",type:"buffer"})
+    // Binary string
+    XLSX.write(workBook,{bookType:"xlsx",type:"binary"})
+    // 
+    XLSX.writeFile(workBook,"StudentAttendance.xlsx"); 
+
+  }
+  
+  
   useEffect(() => {
     console.log("Working....");
     
@@ -150,8 +170,8 @@ export default function ViewAttendance() {
     })
   }, []);
 
-  
-  // console.log(students);
+  // console.log(finalDate);
+  // console.log(filteredUsers);
   return (
     <Page title="Student Records">
       <Container>
@@ -165,6 +185,9 @@ export default function ViewAttendance() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            setFinalDate={setFinalDate}
+            downloadExcel = {downloadExcel}
+            
           />
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -198,13 +221,14 @@ export default function ViewAttendance() {
                             <Stack direction="row" alignItems="center" spacing={2}>
                               <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
-                                {name}
+                                {rollNumber}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{rollNumber}</TableCell>
+                          <TableCell align="left">{name}</TableCell>
                           <TableCell align="left">{hostel}</TableCell>
                           <TableCell align="left">{`24-02-2022`}</TableCell>
+                          <TableCell align="left">{`03:41:50`}</TableCell>
                           <TableCell>{`In-Hostel`}</TableCell>
                           {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                           {/* <TableCell align="left">

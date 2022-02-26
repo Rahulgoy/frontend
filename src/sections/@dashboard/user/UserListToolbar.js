@@ -11,7 +11,13 @@ import {
 } from '@mui/material';
 // component
 import Iconify from '../../../components/Iconify';
-
+import * as React from 'react';
+import TextField from '@mui/material/TextField';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DatePicker from '@mui/lab/DatePicker';
+import Button from '@mui/material/Button';
+import moment from 'moment';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(Toolbar)(({ theme }) => ({
@@ -39,10 +45,18 @@ const SearchStyle = styled(OutlinedInput)(({ theme }) => ({
 UserListToolbar.propTypes = {
   numSelected: PropTypes.number,
   filterName: PropTypes.string,
-  onFilterName: PropTypes.func
+  onFilterName: PropTypes.func,
+  setFinalDate: PropTypes.func,
+  downloadExcel: PropTypes.func
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName }) {
+export default function UserListToolbar({ numSelected, filterName, onFilterName, setFinalDate, downloadExcel }) {
+  const [value, setValue] = React.useState(null);
+  
+  if (value){
+    setFinalDate(moment(value, 'DD/MM/YYYY').format('DD-MM-YYYY'));
+  }
+
   return (
     <RootStyle
       sx={{
@@ -68,6 +82,20 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName 
           }
         />
       )}
+
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Date"
+            value={value}
+            onChange={(newValue) => {
+              setValue(newValue);
+            }}
+            renderInput={(params) => <TextField {...params} />}
+          />
+    </LocalizationProvider>
+    <Button onClick={downloadExcel} variant="outlined" size="large">
+          Download Excel
+        </Button>
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
