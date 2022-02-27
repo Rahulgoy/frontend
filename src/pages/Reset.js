@@ -6,7 +6,6 @@ import { Card, Stack, Link, Container, Typography } from '@mui/material';
 import AuthLayout from '../layouts/AuthLayout';
 // components
 import Page from '../components/Page';
-import { LoginForm } from '../sections/authentication/login';
 import AuthSocial from '../sections/authentication/AuthSocial';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,7 +23,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
-  maxWidth: 464,
+  maxWidth: 600,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -48,41 +47,27 @@ export default function Login() {
   const user = useSelector((state) => state.auth.value);
 
   return (
-    <RootStyle title="Login">
-      
+    <RootStyle title="Reset Password">
 
-      <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
+      <AuthLayout>
+      </AuthLayout>      
+
+      <SectionStyle sx={{ display: { xs: 'none', md: 'inline-flex' } }}>
         <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
           
         </Typography>
-        <img src="/static/illustrations/illustration_login.png" alt="login" />
+        <img src="/static/illustrations/hostelN.jpg" alt="ResetPageIcon" />
       </SectionStyle>
 
-      <Container maxWidth="sm">
+      <Container maxWidth="xs"  sx={{mx:"auto"}}>
         <ContentStyle>
-          <Stack sx={{ mb: 5 }}>
+          <Stack >
             <Typography variant="h4" gutterBottom>
               Reset Password
             </Typography>
-            <Typography sx={{ color: 'text.secondary' }}>Enter your details below.</Typography>
+            <Typography sx={{ color: 'text.secondary' }}>Enter your e-mail id to generate new password.</Typography>
           </Stack>
-          
-
           <ResetForm />
-
-          <Typography
-            variant="body2"
-            align="center"
-            sx={{
-              mt: 3,
-              display: { sm: 'none' }
-            }}
-          >
-            Don’t have an account?&nbsp;
-            <Link variant="subtitle2" component={RouterLink} to="register" underline="hover">
-              Get started
-            </Link>
-          </Typography>
         </ContentStyle>
       </Container>
     </RootStyle>

@@ -21,7 +21,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 const SectionStyle = styled(Card)(({ theme }) => ({
   width: '100%',
-  maxWidth: 464,
+  maxWidth: 600,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -65,28 +65,25 @@ export default function Register() {
       </AuthLayout>
 
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          Manage the job more effectively with Minimal
-        </Typography>
-        <img alt="register" src="/static/illustrations/illustration_register.png" />
+        <img alt="RegistegeIcon" src="/static/illustrations/hostelm.jpg" />
       </SectionStyle>
 
       <Container>
         <ContentStyle>
-          <Box sx={{ mb: 5 }}>
+          <Box sx={{ mb: 3 }}>
             <Typography variant="h4" gutterBottom>
-              Get started absolutely free.
+              Facial Surveillance System
             </Typography>
             <Typography sx={{ color: 'text.secondary' }}>
-              Free forever. No credit card needed.
+              Enter your details below to register.
             </Typography>
           </Box>
 
-          <AuthSocial />
+          {/* <AuthSocial /> */}
 
           <RegisterForm />
 
-          <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
+          {/* <Typography variant="body2" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
             By registering, I agree to Minimal&nbsp;
             <Link underline="always" color="textPrimary">
               Terms of Service
@@ -96,7 +93,7 @@ export default function Register() {
               Privacy Policy
             </Link>
             .
-          </Typography>
+          </Typography> */}
 
           <Typography
             variant="subtitle2"

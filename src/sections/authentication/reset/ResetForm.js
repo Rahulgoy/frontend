@@ -56,7 +56,7 @@ function ResetForm() {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
+        <Stack spacing={3} sx= {{ my:3}}>
           <TextField
             fullWidth
             autoComplete="username"

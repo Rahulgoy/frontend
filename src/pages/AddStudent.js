@@ -15,7 +15,7 @@ import { render } from 'react-dom'
 import { LoadingButton } from '@mui/lab';
 // 
 import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-// import firebase from 'firebase/compat/app';
+
 
 
 // ----------------------------------------------------------------------
@@ -54,10 +54,29 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 // var displayName=false;
-
+var Choose="Choose Profile Pic";
 // var Choose="Choose"
 export default function Register() {
+    const storage = getStorage();
+    const [image, setImage] = useState(null);
+    const [url, setUrl] = useState(null);
+    const handleImageChange = (e) => {
+        if(e.target.files[0]){
+            setImage(e.target.files[0]);  
+            // window.alert("here");
+            // window.alert(e.target.files);
+            // console.log(e.target.files[0].name);
+            // displayName=!displayName;
+            Choose="File : "+e.target.files[0].name;
+        }
+    };
+    const handleChoose = () =>{
+      Choose="File :";
+      // window.alert(e.target.files[0]);
+    }
+    
 
+    console.log(url);
 
   return (
     <RootStyle title="Register">
@@ -89,7 +108,7 @@ export default function Register() {
         
       <Typography align = "center" variant="h4" sx={{ mx: "auto", mb: 4 }}>
           Register New Student
-        </Typography>        
+        </Typography>
         <ContentStyle>
           {/* <Box sx={{ mb: 5 }}>
             <Typography variant="h4" sx={{ mx: "auto"}} gutterBottom>

@@ -1,27 +1,46 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import {db} from '../config/Firebase.js';
 // material
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-
 // component
 import Iconify from '../components/Iconify';
+import LinearProgress from '@mui/material/LinearProgress';
 import { getDatabase, ref, set } from "firebase/database";
 import { getDownloadURL, getStorage, ref as ref_storage, uploadBytes } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
 
 
-
-
-
-// ----------------------------------------------------------------------
-function StudentForm() {
+function writeUserData(values, imageUrl,videoUrl){
+    const db = getDatabase();
+    // console.log(db);
+    set(ref(db,'students/'+values.rollNumber),{
+        name : values.firstName+" "+values.lastName,
+        email: values.email,
+        rollNumber: values.rollNumber,
+        hostel: values.hostel,
+        imageUrl : imageUrl,
+        videoUrl:videoUrl
+      });
+    }
+    
+    
+    
+    // ----------------------------------------------------------------------
+function StudentForm({imageUrl}) {
+    var Choose="Choose Video";
+    const storage = getStorage();
+    const [image, setImage] = useState(null);
+    const [imageName,setImageName]=useState("Choose Image");
+    const [video,setVideo ]=useState(null);
+    const [videoName,setVideoName]=useState("Choose Video");
+    const [imgUrl, setImgUrl] = useState(null);
+    const [vidUrl,setVidUrl]=useState(null);
+    const [uploading,setUploading]=useState(false);
   const navigate = useNavigate();
-  const [imageUrl, setImageUrl] = useState(null);
-  const [videoUrl, setVideoUrl] = useState(null);
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, 'Too Short!')
@@ -34,159 +53,121 @@ function StudentForm() {
     hostel: Yup.string().required('Hostel is Required').matches(/^[A-Z]+$/,'Must be Hostel name')
   });
 
-  const writeUserData = (values, imageUrl, videoUrl) => {
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      rollNumber: '',
+      hostel: ''
+    },
+    validationSchema: RegisterSchema,
+    onSubmit: () => {
+      writeUserData(formik.values, imgUrl,vidUrl);
+    //   console.log(formik.values);
+      navigate('/dashboard/user', { replace: true });
+    }
+  });
 
-    console.log(imageUrl);
-    console.log(videoUrl);
-    const db = getDatabase();
-    // console.log(db);
-    set(ref(db,'students/'+values.rollNumber),{
-        name : values.firstName+" "+values.lastName,
-        email: values.email,
-        rollNumber: values.rollNumber,
-        hostel: values.hostel,
-        imageUrl : imageUrl,
-        videoUrl : videoUrl,
-    });
-}
-
-
-
-
-
-
-
-
-
-
-  // Image Upload
-    const [image, setImage] = useState(null);
-    const [chooseImg, setChooseImg] = useState("Choose Profile Pic");
+    
+    
+    
     const handleImageChange = (e) => {
         if(e.target.files[0]){
             setImage(e.target.files[0]);  
-            setChooseImg("File : "+e.target.files[0].name);
+            // window.alert("here");
+            // window.alert(e.target.files);
+            // console.log(e.target.files[0].name);
+            // displayName=!displayName;
+            setImageName("File : "+e.target.files[0].name);
+            
         }
     };
-    const handleChooseImg = () =>{
-      setChooseImg("File :");
-    }
-    const handleImageUpload = (image) => {
-      console.log("Image Upload")
-        if(image){
-          console.log("Image detected: ", image);
-          const imageRef = ref_storage(storage, `images/${image.name}`);
-        uploadBytes(imageRef, image)
-        .then(()=>{
-            getDownloadURL(imageRef).then((url)=>{
-              console.log(url);
-              setImageUrl(url);
-            })
-            .catch((error)=>{
-                console.log(error.message,"Error");
-            });
-            setImage(null);
-        })
-        .catch((error)=>{
-            console.log(error.message);
-        });
-        }
-        
-    };
+    const handleVideoChange = (e) => {
+      if(e.target.files[0]){
+          setVideo(e.target.files[0]);  
+          // window.alert("here");
+          // window.alert(e.target.files);
+          // console.log(e.target.files[0].name);
+          // displayName=!displayName;
+          setVideoName("File : "+e.target.files[0].name);
+          console.log(video);
+      }
+  };
+    useEffect(()=>{
+      if(!image){
+        return;
+      }
+      handleImageSubmit();
+    },[image]);
 
-
-
-  // Video Upload
-  const storage = getStorage();
-    const [video, setVideo] = useState(null);
-    const [chooseVid, setChooseVid] = useState("Choose Video");
-    const handlevideoChange = (e) => {
-        if(e.target.files[0]){
-            setVideo(e.target.files[0]);  
-            setChooseVid("File : "+e.target.files[0].name);
-        }
-    };
-    const handleChooseVid = () =>{
-      setChooseVid("File :");
-    }
-    const handleVideoUpload = (video) => {
-        if(video){
-          const videoRef = ref_storage(storage, `videos/${video.name}`);
+    useEffect(()=>{
+      if(!video){
+        return;
+      }
+      handleVideoUpload();
+    },[video]);
+    
+    const handleVideoUpload = () => {
+        const videoRef = ref_storage(storage,`video/${video.name}`);
+        setUploading(true);
         uploadBytes(videoRef, video)
         .then(()=>{
             getDownloadURL(videoRef).then((url)=>{
-                setVideoUrl(url);
+                setVidUrl(url);
+                setUploading(false);
             })
             .catch((error)=>{
                 console.log(error.message,"Error");
+                setUploading(false);
             });
-            setVideo(null);
+            // setImage(null);
         })
         .catch((error)=>{
             console.log(error.message);
+            setUploading(false);
         });
-        }
     };
 
-    // console.log(video);
-
-    const formik = useFormik({
-      initialValues: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        rollNumber: '',
-        hostel: '',
-      },
-      validationSchema: RegisterSchema,
-      onSubmit: () => {
-
-        if(image){
-          handleImageUpload(image)
-          .then(()=>{
-            if(video){
-              handleVideoUpload(video)
-              .then(()=>{
-                writeUserData(formik.values, imageUrl, videoUrl);
-              }).catch((error)=>{
-                console.log(error.message,"Error");
-            });
-            }
-          }).catch((error)=>{
-            console.log(error.message,"Error");
+    
+    const handleImageSubmit = () => {
+      // console.log(image);
+      const imageRef = ref_storage(storage, `image/${image.name}`);
+      uploadBytes(imageRef, image)
+      .then(()=>{
+        getDownloadURL(imageRef).then((url)=>{
+          setImgUrl(url);
+        })
+        .catch((error)=>{
+          console.log(error.message,"Error");
         });
-        }else if(video){
-          handleVideoUpload(video)
-              .then(()=>{
-                writeUserData(formik.values, imageUrl, videoUrl);
-              }).catch((error)=>{
-                console.log(error.message,"Error");
-            });
-        }else{
-          writeUserData(formik.values, imageUrl, videoUrl);
-        }
-        
-        
-        
-      //   console.log(formik.values);
-        navigate('/dashboard/user', { replace: true });
-      }
-    });
+      })
+      .catch((error)=>{
+        console.log(error.message);
+      });
+    };
 
-    console.log(videoUrl)
+
+
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
 
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          <Avatar style={{alignSelf: 'center'}} src={imageUrl} sx={{ mx: "auto",width: 150, height: 150  }} />
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center" mt={4}>
-            <LoadingButton variant="outlined" component="label" onClick={handleChooseImg}>{chooseImg}
-              <input hidden type="file" onChange={handleImageChange}/>
-            </LoadingButton>
-            <LoadingButton variant="contained" component="label" onClick={handleImageUpload}>Upload</LoadingButton>
-          </Stack>
+        <Avatar style={{alignSelf: 'center'}} src={imgUrl} sx={{ mx: "auto",width: 150, height: 150  }} />
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center" mt={4}>
+            
+        {/* <Box sx={{display:'flex',flexDirection: 'row', mt: 5, justifyContent:'center'}}> */}
+          <LoadingButton variant="outlined" component="label">{imageName}
+  
+            <input hidden type="file" onChange={handleImageChange}/>
+
+          </LoadingButton>
+        
+          {/* <LoadingButton variant="contained" component="label" onClick={}>Upload</LoadingButton> */}
+        {/* </Box> */}
+        </Stack>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <TextField
               fullWidth
@@ -235,12 +216,13 @@ function StudentForm() {
             />
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 4 }} justifyContent="center" alignItems="center">
-            <LoadingButton variant="outlined" component="label" onClick={handleChooseVid}>{chooseVid}
-              <input hidden type="file" onChange={handlevideoChange}/>  
+            <LoadingButton variant="outlined" component="label">{videoName}
+              <input hidden type="file" onChange={handleVideoChange}/>  
             </LoadingButton>
-            <LoadingButton variant="contained" component="label" onClick={handleVideoUpload}>Upload</LoadingButton>
+            {/* <LoadingButton variant="contained" component="label" onClick={handleVideoUpload}>Upload</LoadingButton> */}
             </Stack>
-            
+            {uploading?(<LinearProgress/>
+          ):(
           <LoadingButton
             fullWidth
             size="large"
@@ -249,7 +231,7 @@ function StudentForm() {
             loading={isSubmitting}
           >
             Add Student
-          </LoadingButton>
+          </LoadingButton>)}
         </Stack>
       </Form>
     </FormikProvider>
