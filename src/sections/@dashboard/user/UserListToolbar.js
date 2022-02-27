@@ -50,11 +50,11 @@ UserListToolbar.propTypes = {
   downloadExcel: PropTypes.func
 };
 
-export default function UserListToolbar({ numSelected, filterName, onFilterName, setFinalDate, downloadExcel }) {
+export default function UserListToolbar({ numSelected, filterName, onFilterName, setFinalDate, downloadExcel, component }) {
   const [value, setValue] = React.useState(null);
   
   if (value){
-    setFinalDate(moment(value, 'DD/MM/YYYY').format('DD-MM-YYYY'));
+    setFinalDate(moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD'));
   }
 
   return (
@@ -83,7 +83,7 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName,
         />
       )}
 
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
+    {component==="Attendance" ? <><LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
             label="Date"
             value={value}
@@ -95,7 +95,8 @@ export default function UserListToolbar({ numSelected, filterName, onFilterName,
     </LocalizationProvider>
     <Button onClick={downloadExcel} variant="outlined" size="large">
           Download Excel
-        </Button>
+        </Button></> : console.log("")}
+    
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">

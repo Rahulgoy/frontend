@@ -71,7 +71,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.Name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -134,8 +134,16 @@ export default function ViewAttendance() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(students, getComparator(order, orderBy), filterName);
-
+ 
+  var filteredUsers = applySortFilter(students, getComparator(order, orderBy), filterName);
+  if(finalDate){
+    // console.log(user.Date.toString()===finalDate.toString())
+    // console.log("Called: ",filteredUsers)
+    const filUsers = []
+    filteredUsers.filter(user => user.Date.toString()===finalDate.toString()).map(us=>filUsers.push(us))
+    // console.log("After: ",filUsers)
+    filteredUsers = filUsers
+  }
   const isUserNotFound = filteredUsers.length === 0;
   
   
@@ -158,7 +166,7 @@ export default function ViewAttendance() {
     console.log("Working....");
     
     const db=getDatabase();
-    const stuValue=ref(db,'students/');
+    const stuValue=ref(db,'users/');
     onValue(stuValue,(snapshot)=>{
       const data=snapshot.val();
       // console.log(data);
@@ -170,17 +178,8 @@ export default function ViewAttendance() {
     })
   }, []);
 
-  // useEffect(() => {
-
-  //   filteredUsers.filter(user => user.)
-
-  //   })
-  // }, [finalDate]);
-
-
 
   // console.log(finalDate);
-  console.log(filteredUsers);
   return (
     <Page title="Student Records">
       <Container>
@@ -196,6 +195,7 @@ export default function ViewAttendance() {
             onFilterName={handleFilterByName}
             setFinalDate={setFinalDate}
             downloadExcel = {downloadExcel}
+            component="Attendance"
             
           />
           <Scrollbar>
@@ -214,8 +214,8 @@ export default function ViewAttendance() {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, name, rollNumber, imageUrl, hostel } = row;
-                      const isItemSelected = selected.indexOf(name) !== -1;
+                      const { id, Name, rollNumber, imageUrl, Hostel, Date, Time, IsOut } = row;
+                      const isItemSelected = selected.indexOf(Name) !== -1;
                       return (
                         <TableRow
                           key={id}
@@ -228,17 +228,17 @@ export default function ViewAttendance() {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={name} src={imageUrl} />
+                              <Avatar alt={Name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {rollNumber}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{name}</TableCell>
-                          <TableCell align="left">{hostel}</TableCell>
-                          <TableCell align="left">{`24-02-2022`}</TableCell>
-                          <TableCell align="left">{`03:41:50`}</TableCell>
-                          <TableCell>{`In-Hostel`}</TableCell>
+                          <TableCell align="left">{Name}</TableCell>
+                          <TableCell align="left">{Hostel}</TableCell>
+                          <TableCell align="left">{Date}</TableCell>
+                          <TableCell align="left">{Time}</TableCell>
+                          <TableCell>{IsOut?"Out":"In"}</TableCell>
                           {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                           {/* <TableCell align="left">
                             <Label
