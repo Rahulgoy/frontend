@@ -31,6 +31,7 @@ import USERLIST from '../_mocks_/user';
 import { getDatabase, ref, onValue} from "firebase/database";
 import * as XLSX from 'xlsx';
 import AttendanceTables from './AttendanceTables';
+import BothAttendanceTables from './BothAttendanceTables';
 // ----------------------------------------------------------------------
 
 
@@ -62,6 +63,10 @@ export default function ViewAttendance() {
 
       setInStudents(inArr);
       setOutStudents(outArr);
+
+
+
+
     })
   }, []);
 
@@ -78,6 +83,8 @@ export default function ViewAttendance() {
         <AttendanceTables students={inStudents}
                           />
         <AttendanceTables students={outStudents}
+                          />
+        <BothAttendanceTables students={students}
                           />
         
         {/* <AttendanceTables selected={selected}

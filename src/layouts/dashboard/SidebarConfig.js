@@ -11,16 +11,17 @@ const sidebarConfig = [
     path: '/dashboard/app',
     icon: getIcon('eva:pie-chart-2-fill')
   },
+  {
+    title: 'Add New Student',
+    path: '/dashboard/add',
+    icon: getIcon('eva:person-add-fill')
+   },
   { 
     title: 'Student Records',
     path: '/dashboard/user',
     icon: getIcon('eva:people-fill')
   },
-  //{
-  //  title: 'Display Students',
-  //  path: '/dashboard/user',
-  //  icon: getIcon('eva:people-fill')
-  //},
+  
 
   // ? SEE LATER
   // {   
