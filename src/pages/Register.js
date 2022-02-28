@@ -47,11 +47,11 @@ export default function Register() {
   useEffect(() => {
     if (user) {
       // User is signed in.
-      console.log(user)
+      // console.log(user)
       navigate('/dashboard/app', { replace: true });
       
     } else {
-      console.log("User not logged in")
+      // console.log("User not logged in")
       // User is not signed in.
     }
   },[user])

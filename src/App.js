@@ -19,7 +19,7 @@ export default function App() {
   initializeApp(firebaseConfig);
   const auth = getAuth();
   const user = useSelector((state) => state.auth.value);
-  console.log("user from state", user);
+  // console.log("user from state", user);
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

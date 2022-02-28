@@ -51,7 +51,7 @@ export default function Login() {
   useEffect(() => {
     if (user) {
       // User is signed in.
-      console.log(user)
+      // console.log(user)
       navigate('/dashboard/app', { replace: true });
       
     } else {

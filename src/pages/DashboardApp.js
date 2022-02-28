@@ -30,7 +30,7 @@ export default function DashboardApp() {
   const navigate = useNavigate();
   const auth = getAuth();
   const user = useSelector((state) => state.auth.value);
-  console.log("user from state", user);
+  // console.log("user from state", user);
   const dispatch = useDispatch();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -51,7 +51,7 @@ export default function DashboardApp() {
           height: 40,
           width: '30vw',
           }}>
-          <Typography variant="h4">Welcome {user===undefined ? '':user.displayName}</Typography>
+          <Typography variant="h4">Welcome {(user===undefined || user===null) ? '':user.displayName}</Typography>
         </Box>
         {/* <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>

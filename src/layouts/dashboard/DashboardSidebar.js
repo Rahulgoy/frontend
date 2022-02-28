@@ -72,7 +72,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2, mx:"auto" }}>
               <Typography variant="subtitle1" sx={{ color: PRIMARY["darker"] }}>
-                {user===undefined ? '':user.displayName}
+                {(user===undefined || user===null) ? '':user.displayName}
               </Typography>
             </Box>
           </AccountStyle>

@@ -37,7 +37,7 @@ function RegisterForm() {
     validationSchema: RegisterSchema,
     onSubmit: () => {
       // signUp(formik.values);
-      console.log(formik.values);
+      // console.log(formik.values);
 
       createUserWithEmailAndPassword(auth, formik.values.email, formik.values.password)
       .then((userCredential) => {
@@ -47,12 +47,15 @@ function RegisterForm() {
           displayName: formik.values.firstName + " " + formik.values.lastName, photoURL: ""
         }).then((userRecord) => {
           // See the UserRecord reference doc for the contents of userRecord.
-          console.log('Successfully created new user:', userRecord);
+          // console.log('Successfully created new user:', userRecord);
+          navigate('/', { replace: true });
         })
         .catch((error) => {
           console.log('Error creating new user:', error);
+          setSubmitting(false);
+          navigate('/register', { replace: true });
         });
-        console.log("Registered user: ", user);
+        // console.log("Registered user: ", user);
         formik.initialValues.email = "";
         formik.initialValues.password = "";
         formik.initialValues.firstName = "";
@@ -69,11 +72,11 @@ function RegisterForm() {
 
 
 
-      navigate('/', { replace: true });
+      
     }
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik;
+  const { errors, touched, handleSubmit, isSubmitting,setSubmitting, getFieldProps } = formik;
 
   return (
     <FormikProvider value={formik}>

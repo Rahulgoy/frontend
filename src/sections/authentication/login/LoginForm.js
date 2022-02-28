@@ -47,19 +47,22 @@ function LoginForm() {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log("Singed in user: ", user);
+        navigate('/dashboard/app', { replace: true });
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log("An error occured: ", errorCode, errorMessage);
+        setSubmitting(false);
+        navigate('/login', { replace: true });
       });
 
-      console.log(formik.values);
-      navigate('/dashboard/app', { replace: true });
+      // console.log(formik.values);
+      
     }
   });
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
+  const { errors, touched, values, isSubmitting, setSubmitting, handleSubmit, getFieldProps } = formik;
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);

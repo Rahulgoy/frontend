@@ -47,18 +47,20 @@ function AccountPopover() {
     setOpen(false);
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = (e) => {
+    e.preventDefault()
     signOut(auth)
       .then(() => {
         console.log("user signed out");
-        <Navigate replace to='/login'/>
-        // navigate("/",{replace:true})
+        // <Navigate replace to='/login'/>
+        navigate("/",{replace:true})
       })
       .catch((error) => {
         console.log("error", error);
       });
   }
 
+  // console.log(user);
   return (
     <>
       <IconButton
@@ -92,10 +94,10 @@ function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap>
-          {user===undefined ? '':user.displayName}
+          {(user===undefined || user===null) ? '':user.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {user===undefined ? '':user.email}
+          {(user===undefined || user===null)? '':user.email}
           </Typography>
         </Box>
 
