@@ -23,23 +23,21 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '100%',
-  maxWidth: 600,
-  alignItems:'center',
+  width: '57%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  margin: theme.spacing(2, 0, 2, 2)
+  margin: theme.spacing(2,1)
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: 480,
+  maxWidth: '85%',
   margin: 'auto',
-  display: 'flex',
+  display: 'flex-start',
   minHeight: '100vh',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: theme.spacing(12, 0)
+  padding: theme.spacing("22vh", 0)
 }));
 
 // ----------------------------------------------------------------------
@@ -73,7 +71,7 @@ export default function Login() {
         <img src="/static/illustrations/hostelO_1.png" alt="LoginPageIcon" />
       </SectionStyle>
 
-      <Container maxWidth="xs" sx={{mx:"auto"}}>
+      <Container maxWidth="xs" sx={{pt:"3vh",mx:"auto"}}>
         <ContentStyle>
           <Stack sx={{mb: 3 }}>
             <Typography variant="h4" gutterBottom>
@@ -94,7 +92,7 @@ export default function Login() {
             }}
           >
             Don’t have an account?&nbsp;
-            <Link variant="subtitle2" component={RouterLink} to="register" underline="hover">
+            <Link variant="subtitle2" component={RouterLink} to="/register" underline="hover">
               Get started
             </Link>
           </Typography>
