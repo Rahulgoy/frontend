@@ -16,6 +16,8 @@ import {
     TableContainer,
     TablePagination
   } from '@mui/material';
+  import { sentenceCase } from 'change-case';
+  import { sample } from 'lodash';
   // components
   import Page from '../components/Page';
   import Label from '../components/Label';
@@ -35,11 +37,11 @@ UserListToolbar.propTypes = {
 
   const TABLE_HEAD = [
     { id: 'rollNumber', label: 'Roll Number', alignRight: false },
-    { id: 'name', label: 'Name', alignRight: false },
-    { id: 'hostel', label: 'Hostel', alignRight: false },
+    // { id: 'name', label: 'Name', alignRight: false },
+    // { id: 'hostel', label: 'Hostel', alignRight: false },
     { id: 'Date',label:'Date',alignRight:false },
-    { id: 'InTime',label:'InTime',alignRight:false },
-    { id: 'OutTime',label:'OutTime',alignRight:false },
+    { id: 'inTime',label:'InTime',alignRight:false },
+    { id: 'outTime',label:'OutTime',alignRight:false },
     { id: 'Status',label:'Status',alignRight:false },
   ];
   
@@ -125,7 +127,7 @@ const BothAttendanceTables = ({students}) => {
       // console.log(user.Date.toString()===finalDate.toString())
       // console.log("Called: ",filteredUsers)
       const filUsers = []
-      filteredUsers.filter(user => user.Date.toString()===finalDate.toString()).map(us=>filUsers.push(us))
+      filteredUsers.filter(user => user.date.toString()===finalDate.toString()).map(us=>filUsers.push(us))
       // console.log("After: ",filUsers)
       filteredUsers = filUsers
     }
@@ -174,8 +176,11 @@ const BothAttendanceTables = ({students}) => {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, Name, rollNumber, imageUrl, Hostel, Date, InTime, OutTime } = row;
-                      const isItemSelected = selected.indexOf(Name) !== -1;
+                      const { id, name, rollNumber, imageUrl, hostel, date, inTime, outTime } = row;
+
+                      const st =  (outTime>inTime) ? sample(['Late']) : sample(['On Time']);
+                      
+                      const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
                           key={id}
@@ -188,28 +193,28 @@ const BothAttendanceTables = ({students}) => {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={Name} src={imageUrl} />
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {rollNumber}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{Name}</TableCell>
-                          <TableCell align="left">{Hostel}</TableCell>
-                          <TableCell align="left">{Date}</TableCell>
-                          <TableCell align="left">{InTime}</TableCell>
-                          <TableCell align="left">{OutTime}</TableCell>
-                          <TableCell align="left">status</TableCell>
+                          {/* <TableCell align="left">{name}</TableCell> */}
+                          {/* <TableCell align="left">{hostel}</TableCell> */}
+                          <TableCell align="left">{date}</TableCell>
+                          <TableCell align="left">{inTime}</TableCell>
+                          <TableCell align="left">{outTime}</TableCell>
+                          {/* <TableCell align="left">status</TableCell> */}
                           
                           {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-                          {/* <TableCell align="left">
+                          <TableCell align="left">
                             <Label
                               variant="ghost"
-                              color={(status === 'banned' && 'error') || 'success'}
+                              color={outTime>inTime ?'error' : 'success'}
                             >
-                              {sentenceCase(status)}
+                              {sentenceCase(st)}
                             </Label>
-                          </TableCell> */}
+                          </TableCell>
                         </TableRow>
                       );
                     })}

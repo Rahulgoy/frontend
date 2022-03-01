@@ -10,9 +10,9 @@ import { LoadingButton } from '@mui/lab';
 
 const Profile = () => {
     const {roll} = useParams();
-    const [user, setUser] = useState([]);
-    const [imgUrl, setImageUrl] = useState(user.imageUrl);
-    const [vidUrl,setVideoUrl]=useState(user.videoUrl);
+    const [student, setStudent] = useState([]);
+    const [imgUrl, setImageUrl] = useState(student.imageUrl);
+    const [vidUrl,setVideoUrl]=useState(student.videoUrl);
     
 
     const RegisterSchema = Yup.object().shape({
@@ -30,13 +30,13 @@ const Profile = () => {
       const formik = useFormik({
         enableReinitialize: true,
         initialValues: {
-          firstName: user.name.split(' ')[0],
-          lastName: user.name.split(' ')[1],
-          email: user.email,
-          rollNumber: user.rollNumber,
-          hostel: user.hostel,
-          imageUrl: user.imageUrl,
-          videoUrl: user.videoUrl
+          firstName: student.name.split(' ')[0],
+          lastName: student.name.split(' ')[1],
+          email: student.email,
+          rollNumber: student.rollNumber,
+          hostel: student.hostel,
+          imageUrl: student.imageUrl,
+          videoUrl: student.videoUrl
         },
         validationSchema: RegisterSchema,
         onSubmit: () => {
@@ -50,7 +50,7 @@ const Profile = () => {
     onValue(stuValue,(snapshot)=>{
       const data=snapshot.val();
       console.log(data);
-      setUser(data);
+      setStudent(data);
     })
   },[])
   console.log(imgUrl);
@@ -84,7 +84,7 @@ const Profile = () => {
 
           <TextField
             fullWidth
-            autoComplete="username"
+            autoComplete="studentname"
             InputLabelProps={{ shrink: true }}
             type="email"
             label="Email address"
