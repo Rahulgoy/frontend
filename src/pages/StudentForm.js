@@ -4,10 +4,9 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import {db} from '../config/Firebase.js';
 // material
-import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
+import { Stack, TextField} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
-import Iconify from '../components/Iconify';
 import LinearProgress from '@mui/material/LinearProgress';
 import { getDatabase, ref, set } from "firebase/database";
 import { getDownloadURL, getStorage, ref as ref_storage, uploadBytes } from "firebase/storage";
@@ -23,7 +22,7 @@ function writeUserData(values, imageUrl,videoUrl){
         rollNumber: values.rollNumber,
         hostel: values.hostel,
         imageUrl : imageUrl,
-        videoUrl:videoUrl
+        videoUrl : videoUrl
       });
     }
     
