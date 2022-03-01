@@ -40,7 +40,7 @@ export default function ViewAttendance() {
   const [students, setStudents] = useState([]);
   const [inStudents, setInStudents] = useState([]);
   const [outStudents, setOutStudents] = useState([]);
-  
+  const [finalStudents, setFinalStudents] = useState([]);
   
   useEffect(() => {
     console.log("Working....");
@@ -51,6 +51,7 @@ export default function ViewAttendance() {
       const data=snapshot.val();
       // console.log(data);
       const arr = [];
+      const final = [];
       Object.keys(data).forEach(key => { 
         arr.push(data[key]);
       })
@@ -58,20 +59,109 @@ export default function ViewAttendance() {
       setStudents(arr);
       const inArr = [];
       const outArr = [];
-      arr.filter(user => user.IsOut===false).map(us=>inArr.push(us));
-      arr.filter(user => user.IsOut===true).map(us=>outArr.push(us));
+      arr.filter(user => user.isOut===false).map(us=>inArr.push(us));
+      arr.filter(user => user.isOut===true).map(us=>outArr.push(us));
 
       setInStudents(inArr);
       setOutStudents(outArr);
 
 
+      const groupByCategory = arr.reduce((group, product) => {
+        const { rollNumber } = product;
+        group[rollNumber] = group[rollNumber] ?? [];
+        group[rollNumber].push(product);
+        return group;
+      }, {});
+
+      const rollGroups = []
+      Object.keys(groupByCategory).forEach(key => { 
+        rollGroups.push(groupByCategory[key]);
+      })
+      // console.log(rollGroups)
+
+      rollGroups.map((groupedRoll)=>
+          {
+            const groupByIsOut = groupedRoll.reduce((group, product) => {
+              const { isOut } = product;
+              group[isOut] = group[isOut] ?? [];
+              group[isOut].push(product);
+              return group;
+            }, {});
+            const isOutGroups = []
+            Object.keys(groupByIsOut).forEach(key => { 
+              isOutGroups.push(groupByIsOut[key]);
+            })
+            var temp = isOutGroups;
+            // console.log(temp);
+            isOutGroups.map(tgroup=>{
+              tgroup.sort((a,b) => b.time - a.time);
+              tgroup.slice(0,1).map((item, i) => final.push(item))
+            })
+            // console.log(final);
+          }
+        ); 
+      
+      const finalList = []
+      const groupByRoll = final.reduce((group, product) => {
+        const { rollNumber } = product;
+        group[rollNumber] = group[rollNumber] ?? [];
+        group[rollNumber].push(product);
+        return group;
+      }, {});
+
+      const rollGroupsAfterSort = []
+      Object.keys(groupByRoll).forEach(key => { 
+        rollGroupsAfterSort.push(groupByRoll[key]);
+      })
+
+      // console.log(rollGroupsAfterSort);
+
+      rollGroupsAfterSort.map(roll =>{
+
+        const atten = {
+          date: '',
+          rollNumber: '',
+          inTime: '',
+          outTime: ''
+        }
+
+        // console.log(roll.length)
+        if(roll.length===1){
+          if(roll[0].isOut){
+            atten.outTime = roll[0].time;
+            atten.inTime = "0"
+          }else{
+            atten.outTime = "0";
+            atten.inTime = roll[0].time;
+          }
+        }else{
+          if(roll[0].isOut){
+            atten.outTime = roll[0].time;
+            atten.inTime = roll[1].time;
+          }else{
+            atten.outTime = roll[1].time;
+            atten.inTime = roll[0].time;
+          }
+        }
+        
+        atten.date=roll[0].date;
+        atten.rollNumber = roll[0].rollNumber;
+        console.log(atten)
+        finalList.push(atten);
+      })
+      // console.log(finalList);
+
+      setFinalStudents(finalList)
 
 
-    })
+
+
+
+      })
   }, []);
 
 
-  // console.log(finalDate);
+  // console.log(inStudents);
   return (
     <Page title="Student Records">
       <Container>
@@ -84,7 +174,7 @@ export default function ViewAttendance() {
                           />
         <AttendanceTables students={outStudents}
                           />
-        <BothAttendanceTables students={students}
+        <BothAttendanceTables students={finalStudents}
                           />
         
         {/* <AttendanceTables selected={selected}

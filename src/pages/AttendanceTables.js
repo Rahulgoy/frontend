@@ -55,11 +55,11 @@ UserListToolbar.propTypes = {
 
   const TABLE_HEAD = [
     { id: 'rollNumber', label: 'Roll Number', alignRight: false },
-    { id: 'name', label: 'Name', alignRight: false },
+    // { id: 'name', label: 'Name', alignRight: false },
     { id: 'hostel', label: 'Hostel', alignRight: false },
-    { id: 'Date',label:'Date',alignRight:false },
-    { id: 'Time',label:'Time',alignRight:false },
-    { id: 'Status',label:'Status',alignRight:false },
+    { id: 'date',label:'Date',alignRight:false },
+    { id: 'time',label:'Time',alignRight:false },
+    { id: 'status',label:'Status',alignRight:false },
   ];
   
   // ----------------------------------------------------------------------
@@ -92,7 +92,7 @@ UserListToolbar.propTypes = {
       return a[1] - b[1];
     });
     if (query) {
-      return filter(array, (_user) => _user.Name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+      return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
     }
     return stabilizedThis.map((el) => el[0]);
   }
@@ -144,7 +144,7 @@ const AttendanceTables = ({students}) => {
       // console.log(user.Date.toString()===finalDate.toString())
       // console.log("Called: ",filteredUsers)
       const filUsers = []
-      filteredUsers.filter(user => user.Date.toString()===finalDate.toString()).map(us=>filUsers.push(us))
+      filteredUsers.filter(user => user.date.toString()===finalDate.toString()).map(us=>filUsers.push(us))
       // console.log("After: ",filUsers)
       filteredUsers = filUsers
     }
@@ -193,8 +193,8 @@ const AttendanceTables = ({students}) => {
                   {filteredUsers
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, Name, rollNumber, imageUrl, Hostel, Date, Time, IsOut } = row;
-                      const isItemSelected = selected.indexOf(Name) !== -1;
+                      const { id, name, rollNumber, imageUrl, hostel, date, time, isOut } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
                       return (
                         <TableRow
                           key={id}
@@ -207,17 +207,17 @@ const AttendanceTables = ({students}) => {
                           </TableCell>
                           <TableCell component="th" scope="row" padding="none">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={Name} src={imageUrl} />
+                              <Avatar alt={name} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
                                 {rollNumber}
                               </Typography>
                             </Stack>
                           </TableCell>
-                          <TableCell align="left">{Name}</TableCell>
-                          <TableCell align="left">{Hostel}</TableCell>
-                          <TableCell align="left">{Date}</TableCell>
-                          <TableCell align="left">{Time}</TableCell>
-                          <TableCell>{IsOut?"Out":"In"}</TableCell>
+                          {/* <TableCell align="left">{name}</TableCell> */}
+                          <TableCell align="left">{hostel}</TableCell>
+                          <TableCell align="left">{date}</TableCell>
+                          <TableCell align="left">{time}</TableCell>
+                          <TableCell>{isOut?"Out":"In"}</TableCell>
                           {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
                           {/* <TableCell align="left">
                             <Label
