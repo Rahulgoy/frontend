@@ -10,7 +10,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { BaseOptionChartStyle } from './components/charts/BaseOptionChart';
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "./config/Firebase";
-import { getAuth, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { saveUser } from "./redux/slices/authSlice";
 // ----------------------------------------------------------------------

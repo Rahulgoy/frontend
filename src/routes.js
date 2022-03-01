@@ -13,6 +13,7 @@ import Products from './pages/Products';
 import Blog from './pages/Blog';
 import User from './pages/User';
 import NotFound from './pages/Page404';
+import Profile from './pages/Profile';
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,8 @@ export default function Router() {
         { path: 'products', element: <Products /> },
         { path: 'blog', element: <Blog /> },
         { path: 'add', element: <AddStudent />},
-        { path: 'view', element: <ViewAttendance />}
+        { path: 'view', element: <ViewAttendance />},
+        { path: 'profile/:roll', element: <Profile />}
       ]
     },
     {
