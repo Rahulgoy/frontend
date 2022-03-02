@@ -20,7 +20,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '57%',
+  width: '165%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -28,7 +28,7 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
-  maxWidth: "85%",
+  maxWidth: "95%",
   margin: 'auto',
   display: 'flex',
   minHeight: '100vh',
@@ -64,7 +64,7 @@ export default function Register() {
       </AuthLayout>
 
       <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <img alt="RegistegerIcon" src="/static/illustrations/hostelN.jpg" />
+        <img alt="RegistegerIcon" src="/static/illustrations/hostelO_1.png" />
       </SectionStyle>
 
       <Container>

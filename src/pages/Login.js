@@ -23,7 +23,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '57%',
+  width: '165%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',

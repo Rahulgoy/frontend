@@ -22,7 +22,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 }));
 
 const SectionStyle = styled(Card)(({ theme }) => ({
-  width: '50%',
+  width: '165%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -51,11 +51,8 @@ export default function Login() {
       <AuthLayout>
       </AuthLayout>      
 
-      <SectionStyle sx={{ display: { xs: 'none', md: 'inline-flex' } }}>
-        <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-          
-        </Typography>
-        <img src="/static/illustrations/hostelN.jpg" alt="ResetPageIcon" />
+      <SectionStyle sx={{ display: { xs: 'none', md: 'flex' } }}>
+        <img src="/static/illustrations/hostelO_1.png" alt="ResetPageIcon" />
       </SectionStyle>
 
       <Container maxWidth="xs"  sx={{mx:"auto"}}>
