@@ -27,6 +27,7 @@ import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashbo
 //
 import USERLIST from '../_mocks_/user';
 import { getDatabase, ref, onValue} from "firebase/database";
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -73,13 +74,15 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function User() {
+  const students = useSelector((state) => state.students.value);
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [students, setStudents] = useState([]);
+  // const [students, setStudents] = useState([]);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -134,17 +137,19 @@ export default function User() {
   useEffect(() => {
     console.log("Working....");
     
-    const db=getDatabase();
-    const stuValue=ref(db,'students/');
-    onValue(stuValue,(snapshot)=>{
-      const data=snapshot.val();
-      // console.log(data);
-      const arr = [];
-      Object.keys(data).forEach(key => { 
-        arr.push(data[key]);
-      })
-      setStudents(arr);
-    })
+    // const db=getDatabase();
+    // const stuValue=ref(db,'students/');
+    // onValue(stuValue,(snapshot)=>{
+    //   const data=snapshot.val();
+    //   // console.log(data);
+    //   const arr = [];
+    //   Object.keys(data).forEach(key => { 
+    //     arr.push(data[key]);
+    //   })
+    //   setStudents(arr);
+    // })
+
+    
   }, []);
 
   

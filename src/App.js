@@ -13,6 +13,8 @@ import { firebaseConfig } from "./config/Firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useSelector, useDispatch } from "react-redux";
 import { saveUser } from "./redux/slices/authSlice";
+import { saveStudents } from './redux/slices/studentsSlice';
+import { getDatabase, ref, onValue} from "firebase/database";
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -29,6 +31,23 @@ export default function App() {
         dispatch(saveUser(null));
       }
     });
+
+
+    const db=getDatabase();
+    const stuValue=ref(db,'students/');
+    onValue(stuValue,(snapshot)=>{
+      const data=snapshot.val();
+      // console.log(data);
+      const arr = [];
+      Object.keys(data).forEach(key => { 
+        arr.push(data[key]);
+      })
+      if (data) {
+        dispatch(saveStudents(arr));
+      } else {
+        dispatch(saveStudents("null"));
+      }
+    })
   }, [auth, dispatch]);
   return (
     
