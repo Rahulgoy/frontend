@@ -20,7 +20,7 @@ import { getDatabase, ref, onValue} from "firebase/database";
 export default function App() {
   initializeApp(firebaseConfig);
   const auth = getAuth();
-  const user = useSelector((state) => state.auth.value);
+  // const user = useSelector((state) => state.auth.value);
   // console.log("user from state", user);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -31,7 +31,6 @@ export default function App() {
         dispatch(saveUser(null));
       }
     });
-
 
     const db=getDatabase();
     const stuValue=ref(db,'students/');
