@@ -70,7 +70,7 @@
     "simplebar": "^5.3.6",
     "simplebar-react": "^2.3.6",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.2",
+    "xlsx": "^0.18.3",
     "yup": "^0.32.11"
   }
 }
