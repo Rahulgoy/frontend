@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { getDatabase, ref, onValue} from "firebase/database";
+// import { getDatabase, ref, onValue} from "firebase/database";
 import * as Yup from 'yup';
-import { useFormik, Form, FormikProvider } from 'formik';
-import Avatar from "@mui/material/Avatar";
+// import { useFormik, Form, FormikProvider } from 'formik';
+// import Avatar from "@mui/material/Avatar";
 import Page from '../components/Page';
 
-import { LoadingButton } from '@mui/lab';
+// import { LoadingButton } from '@mui/lab';
 import StudentUpdate from "./StudentUpdate";
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Grid,Typography,Stack } from '@mui/material';
+import { Card,Container,Typography} from '@mui/material';
 import { useSelector } from 'react-redux';
 
 
@@ -49,7 +49,7 @@ const Profile=()=>{
   const student=students.filter((student)=>{
     return student.rollNumber===roll;
   })
-  // console.log(student);
+  console.log(student);
   const studentInfo=student[0] || {};
   // console.log(stuValue);
     return (

@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useState,useEffect } from 'react';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // import {db} from '../config/Firebase.js';
 // material
 import { Stack, TextField} from '@mui/material';
@@ -11,6 +11,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { getDatabase, ref, set,onValue } from "firebase/database";
 import { getDownloadURL, getStorage, ref as ref_storage, uploadBytes } from "firebase/storage";
 import Avatar from "@mui/material/Avatar";
+import { useSelector } from 'react-redux';
 
 
 function writeUserData(values, imageUrl,videoUrl){
@@ -30,13 +31,15 @@ function writeUserData(values, imageUrl,videoUrl){
     
     // ----------------------------------------------------------------------
 function StudentUpdate({studentInfo}) {
-    // useEffect(()=>{
-    //     onValue(stuValue,(snapshot)=>{
-    //             const data=snapshot.val();
-    //             // console.log(data);
-    //             setStuInfo(data);
-    //     })
-    //     },[]);
+    const {roll} = useParams();
+    const students = useSelector((state) => state.students.value) || [];
+      
+    console.log(roll)
+      const student=students.filter((student)=>{
+        return student.rollNumber===roll;
+      })
+      if(!studentInfo) studentInfo = student[0] || {};
+    console.log(studentInfo);
     // // console.log(rollNumber);
     // const db=getDatabase();
     // const stuValue=ref(db,'students/'+rollNumber);
